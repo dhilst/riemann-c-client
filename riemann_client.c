@@ -84,6 +84,9 @@ int riemann_events_send_stdout(riemann_events_t *evts)
         return riemann_msg_send_stdout(&msg);
 }
 
+/* @TODO
+ * Implement error checks on rieman_event_set functions
+ */
 void riemann_event_set_host(riemann_event_t *evtp, const char *host)
 {
         evtp->host = strdup(host);
@@ -103,4 +106,47 @@ void riemann_event_set_metric_f(riemann_event_t *evtp, const float metric)
 {
         evtp->metric_f = metric;
         evtp->has_metric_f = 1;
+}
+
+void riemann_event_set_time(riemann_event_t *evtp, const int64_t time)
+{
+        evtp->time = time;
+        evtp->has_time = 1;
+}
+
+void riemann_event_set_description(riemann_event_t *evtp, const char *desc)
+{
+        evtp->description = strdup(desc);
+}
+
+int riemann_event_set_tags(riemann_event_t *evtp, const char **tags, size_t n_tags)
+{
+        int i;
+
+        evtp->tags = malloc(sizeof (char *) * n_tags);
+        if (!evtp->tags)
+                return -1;
+
+        for (i = 0; i < n_tags; i++) 
+                evtp->tags[i] = strdup(tags[i]);
+        evtp->n_tags = n_tags;
+        return 0;
+}
+
+void  riemann_event_set_ttl(riemann_event_t *evtp, float ttl)
+{
+        evtp->ttl = ttl;
+        evtp->has_ttl = 1;
+}
+
+void riemann_event_set_metric_sint64(riemann_event_t *evtp, int64_t metric)
+{
+        evtp->metric_sint64 = metric;
+        evtp->has_metric_sint64 = 1;
+}
+
+void riemann_event_set_metric_d(riemann_event_t *evtp, double metric)
+{
+        evtp->metric_d = metric;
+        evtp->has_metric_d = 1;
 }
