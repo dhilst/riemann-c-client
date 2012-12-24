@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include "proto.pb-c.h"
 #include "common.h"
@@ -16,7 +17,7 @@ typedef struct _riemann_events_s riemann_events_t;
 
 
 
-void riemann_events_init(riemann_events_t *events, size_t n_events);
+int riemann_events_init(riemann_events_t *events, size_t n_events);
 int rimeann_events_send_stdout(riemann_events_t *evts);
 void riemann_event_set_host(riemann_event_t *evtp, const char *host);
 void riemann_event_set_service(riemann_event_t *evtp, const char *service);

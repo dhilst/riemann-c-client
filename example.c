@@ -22,7 +22,11 @@ int main(void)
         riemann_event_t *evtp;
         int error;
         int i;
-        riemann_events_init(&events, 10); /* alloc space and initialize N events */
+        error = riemann_events_init(&events, 10); /* alloc space and initialize N events */
+        if (error) {
+                fprintf(stderr, "Can't allocate events: %d", error);
+                exit(EXIT_FAILURE);
+        }
         
         FOR_EACH_EVENT(events, i, evtp) {
                 riemann_event_set_host(evtp, hosts[i]);
@@ -36,5 +40,7 @@ int main(void)
                 fprintf(stderr, "Can't send events to stdout");
                 exit(EXIT_FAILURE);
         }
+
+        riemann_events_free(&events);
         return 0;
 }

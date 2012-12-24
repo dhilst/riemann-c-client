@@ -9,12 +9,12 @@ static void riemann_event_init(riemann_event_t *evt)
 
 static riemann_event_t *riemann_event_alloc_event(void)
 {
-        return (xmalloc(sizeof (riemann_event_t)));
+        return (malloc(sizeof (riemann_event_t)));
 }
 
 static riemann_event_t **rieman_event_alloc_events(size_t n_events)
 {
-        return (xmalloc(sizeof (riemann_event_t *) * n_events));
+        return (malloc(sizeof (riemann_event_t *) * n_events));
 }
 
 static  riemann_msg_send_stdout(Msg *msg)
@@ -36,17 +36,43 @@ static  riemann_msg_send_stdout(Msg *msg)
         return 0;
 }
 
-void riemann_events_init(riemann_events_t *events, size_t n_events)
+/* @TODO:
+ * - Implement human readable errors
+ */
+int riemann_events_init(riemann_events_t *events, size_t n_events)
 {
         int i;
 
         events->events = rieman_event_alloc_events(n_events);
+        if (!events->events)
+                return -1;
         events->n_events = n_events;
 
         for (i = 0; i < n_events; i++) {
                 events->events[i] = riemann_event_alloc_event();
+                if (!events->events[i]) { 
+                        int j;
+                        for (j = 0; j < i; j++) {
+                                free(events->events[i]);
+                                events->events[i] = NULL;
+                        }
+                        free(events->events);
+                        return -2;
+                }
                 riemann_event_init(events->events[i]);
         }
+        return 0;
+}
+
+int riemann_events_free(riemann_events_t *evts)
+{
+        int i;
+       
+        for (i = 0; i < evts->n_events; i++) {
+                xfree(evts->events[i]);
+        }
+        xfree(evts->events);
+        evts->n_events = 0;
 }
 
 int riemann_events_send_stdout(riemann_events_t *evts)
