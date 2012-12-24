@@ -37,8 +37,9 @@ int main(void)
                 riemann_event_set_host(evtp, hosts[i]);
                 riemann_event_set_service(evtp, "cpu-idle");
                 riemann_event_set_state(evtp, "ok");
-                riemann_event_set_metric_d(evtp, 100l);
+                riemann_event_set_metric_f(evtp, 100l);
                 riemann_event_set_tags(evtp, tags, n_tags);
+                riemann_event_set_description(evtp, "Percent cpu idle time");
         }
 
         error = riemann_events_send_stdout(&events);
