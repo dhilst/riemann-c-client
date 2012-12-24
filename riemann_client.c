@@ -17,7 +17,7 @@ static riemann_event_t **rieman_event_alloc_events(size_t n_events)
         return (malloc(sizeof (riemann_event_t *) * n_events));
 }
 
-static  riemann_msg_send_stdout(Msg *msg)
+static int riemann_msg_send_stdout(Msg *msg)
 {
         uint8_t *buf;
         int len;
@@ -64,7 +64,7 @@ int riemann_events_init(riemann_events_t *events, size_t n_events)
         return 0;
 }
 
-int riemann_events_free(riemann_events_t *evts)
+void riemann_events_free(riemann_events_t *evts)
 {
         int i;
        

@@ -6,7 +6,7 @@ O client library to rieman writen in C
 @TODO
 =====
 
-- Change Makefile to build a shared library
+- Create a script to insert TODO's here
 - Implement UDP code
 - Implement Queries
 - Port to Autotools

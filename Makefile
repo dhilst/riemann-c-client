@@ -1,17 +1,20 @@
-test: riemann_client.o common.o proto.pb-c.o example.c
-	gcc -g -o test example.c $(CFLAGS) $(LDFLAGS) riemann_client.o -lprotobuf-c common.o proto.pb-c.o
+libriemann_client.so: riemann_client.o common.o proto.pb-c.o
+	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -shared -o libriemann_client.so riemann_client.o common.o proto.pb-c.o -lprotobuf-c
 
-riemann_client.o: riemann_client.c riemann_client.h common.o proto.pb-c.o
-	gcc -c riemann_client.c
+riemann_client.o: riemann_client.c riemann_client.h proto.pb-c_files
+	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -fPIC -c riemann_client.c
 
 common.o: common.h common.c
-	gcc -c common.c 
+	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -fPIC -c common.c 
 
-proto.pb-c.o: proto.pb-c.h proto.pb-c.c
-	gcc -c proto.pb-c.c
+proto.pb-c.o: proto.pb-c_files
+	gcc $(CFLAGS) $(LDFLAGS) -fPIC -c proto.pb-c.c
 
-proto.pb-c.c proto.pb-c.h: proto.proto
+proto.pb-c_files: proto.proto
 	protoc-c --c_out=$(PWD) proto.proto
 
+test: libriemann_client.so
+	gcc -g -o test example.c $(CFLAGS) $(LDFLAGS) -L. -lriemann_client
+
 clean:
-	rm -f test *.o proto.pb-c.* *~
+	rm -f test *.o proto.pb-c.* *~ *.so
