@@ -4,7 +4,6 @@ O client library to rieman writen in C
 
 # @TODO
 
-
 - Improve UDP code
   - Implement send with ack
 - Implement Queries
@@ -25,16 +24,14 @@ WARNING: This is in really early stages, and was not fully tested.
 git clone https://github.com/gkos/riemann-c-client-lib.git
 ```
 
-2. Build
-
+2. Build<br/>
 You need protobuf-c installed and on your path to do this. You can find it at http://code.google.com/p/protobuf-c/
 ```
 make
 ```
 This will create the libriemann_client.so
 
-3. Install!?
-
+3. Install!?<br/>
 This is not yet implemented, but you can move libriemann_client.so to your /usr/local/lib and use it from there.
 
 # Usage
