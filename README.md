@@ -21,9 +21,9 @@ O client library to rieman writen in C
 WARNING: This is in really early stages, and was not fully tested.
 
 1. Clone
-   ```
-   git clone https://github.com/gkos/riemann-c-client-lib.git
-   ```
+```
+git clone https://github.com/gkos/riemann-c-client-lib.git
+```
 
 2. Build
 
