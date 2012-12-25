@@ -15,9 +15,9 @@ static char *hosts[] = {
         "host-9",
 };
 
-
 int main(void)
 {
+        riemann_udp_client_t cli;
         riemann_events_t events;
         riemann_event_t *evtp;
         char *tags[] = { "cpu", "performance", "load", };
@@ -25,10 +25,9 @@ int main(void)
         int error;
         int i;
 
-
         error = riemann_events_init(&events, 10); /* alloc space and initialize N events */
         if (error) {
-                fprintf(stderr, "Can't allocate events: %d", error);
+                fprintf(stderr, "Can't allocate events: %d\n", error);
                 exit(EXIT_FAILURE);
         }
         
@@ -42,12 +41,20 @@ int main(void)
                 riemann_event_set_description(evtp, "Percent cpu idle time");
         }
 
-        error = riemann_events_send_stdout(&events);
+        cli = RIEMANN_UDP_CLIENT_INIT;
+        error = riemann_udp_client_create(&cli, "192.168.5.36", 5555);
         if (error) {
-                fprintf(stderr, "Can't send events to stdout");
+                fprintf(stderr, "Can't create UDP client\n");
                 exit(EXIT_FAILURE);
         }
 
+        error = riemann_events_send_udp(&cli, &events);
+        if (error) {
+                fprintf(stderr, "Can't send data to UDP server\n");
+                exit(EXIT_FAILURE);
+        }
+
+        riemann_udp_client_free(&cli);
         riemann_events_free(&events);
         return 0;
 }

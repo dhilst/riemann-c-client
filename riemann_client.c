@@ -1,4 +1,10 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "riemann_client.h"
+#include "common.h"
+#include "udp.h"
+#include "proto.pb-c.h"
 
 #define RIEMANN_EVENT_INIT EVENT__INIT
 
@@ -17,28 +23,24 @@ static riemann_event_t **rieman_event_alloc_events(size_t n_events)
         return (malloc(sizeof (riemann_event_t *) * n_events));
 }
 
-static int riemann_msg_send_stdout(Msg *msg)
+uint8_t* riemann_events_pack(riemann_events_t *evts, size_t *len)
 {
+        Msg msg = MSG__INIT;
         uint8_t *buf;
-        int len;
 
-        len = msg__get_packed_size(msg);
-        if (len <= 0)
-                return -1;
+        msg.events = evts->events;
+        msg.n_events = evts->n_events;
+        *len = msg__get_packed_size(&msg);
+        buf = malloc(*len);
+        if (!buf) {
+                fprintf(stderr, "riemann_client.c riemann_events_pack(%d): malloc() fails\n", __LINE__);
+                return NULL;
+        }
 
-        buf = xmalloc(len);
-
-        len = msg__pack(msg, buf);
-        
-        fwrite(buf, len, 1, stdout);
-        if (ferror(stdout))
-                return -2;
-        return 0;
+        msg__pack(&msg, buf);
+        return buf;
 }
-
-/* @TODO:
- * - Implement human readable errors
- */
+                                                
 int riemann_events_init(riemann_events_t *events, size_t n_events)
 {
         int i;
@@ -75,18 +77,46 @@ void riemann_events_free(riemann_events_t *evts)
         evts->n_events = 0;
 }
 
-int riemann_events_send_stdout(riemann_events_t *evts)
+int riemann_events_send_stream(riemann_events_t *evts, FILE *stream)
 {
-        Msg msg = MSG__INIT;
-        msg.n_events = evts->n_events;
-        msg.events = evts->events;
+        uint8_t *buf;
+        size_t len;
 
-        return riemann_msg_send_stdout(&msg);
+        buf = riemann_events_pack(evts, &len);
+        if (!buf) {
+                fprintf(stderr, "riemann_client.c riemann_events_send_stream(%d): riemann_events_pack() fails\n", __LINE__);
+                return -1;
+        }
+
+        fwrite(buf, len, 1, stream);
+        if (ferror(stream)) {
+                fprintf(stderr, "riemann_client.c riemann_events_send_stream(%d): Error while sending data to stream\n", __LINE__);
+                return -2;
+        }
+        return 0;
 }
 
-/* @TODO
- * Implement error checks on rieman_event_set functions
- */
+int riemann_events_send_udp(riemann_udp_client_t *cli, riemann_events_t *evts)
+{
+        uint8_t *buf;
+        size_t len;
+        int error;
+        
+        buf = riemann_events_pack(evts, &len);
+        if (!buf) {
+                fprintf(stderr, "riemann_client.c riemann_events_send_udp(%d): riemann_events_pack() fails\n", __LINE__);
+                return -1;
+        }
+
+        error = riemann_udp_client_send(cli, buf, len, 0);
+        if (error) {
+                fprintf(stderr, "riemann_client.c riemann_events_send_udp(%d): Error while send data to server\n", __LINE__);
+                return -2;
+        }
+        
+        return 0;                
+}
+
 void riemann_event_set_host(riemann_event_t *evtp, const char *host)
 {
         evtp->host = strdup(host);
@@ -150,3 +180,5 @@ void riemann_event_set_metric_d(riemann_event_t *evtp, double metric)
         evtp->metric_d = metric;
         evtp->has_metric_d = 1;
 }
+
+

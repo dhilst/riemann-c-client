@@ -1,5 +1,10 @@
+#ifndef RIEMANN_COMMON_H
+# define RIEMANN_COMMON_H
+
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 
 #define pexit(s) \
 do {						\
@@ -9,3 +14,5 @@ do {						\
 
 void xfree(void *ptr);
 void *xmalloc(size_t len);
+
+#endif

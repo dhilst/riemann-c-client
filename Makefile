@@ -1,11 +1,14 @@
-libriemann_client.so: riemann_client.o common.o proto.pb-c.o
-	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -shared -o libriemann_client.so riemann_client.o common.o proto.pb-c.o -lprotobuf-c
+libriemann_client.so: riemann_client.o common.o proto.pb-c.o udp.o
+	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -shared -o libriemann_client.so riemann_client.o common.o proto.pb-c.o udp.o -lprotobuf-c
 
 riemann_client.o: riemann_client.c riemann_client.h proto.pb-c_files
 	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -fPIC -c riemann_client.c
 
 common.o: common.h common.c
 	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -fPIC -c common.c 
+
+udp.o: udp.c udp.h
+	gcc $(CFLAGS) $(LDFLAGS) -Wall -Werror -fPIC -c udp.c
 
 proto.pb-c.o: proto.pb-c_files
 	gcc $(CFLAGS) $(LDFLAGS) -fPIC -c proto.pb-c.c
