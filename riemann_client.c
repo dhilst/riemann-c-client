@@ -6,8 +6,6 @@
 #include "udp.h"
 #include "proto.pb-c.h"
 
-#define RIEMANN_EVENT_INIT EVENT__INIT
-
 static void riemann_event_init(riemann_event_t *evt)
 {
         event__init((Event *) evt);
@@ -66,11 +64,42 @@ int riemann_events_init(riemann_events_t *events, size_t n_events)
         return 0;
 }
 
+void riemann_event_free(riemann_event_t *e)
+{
+        if (e->state)
+                free(e->state);
+        e->state = NULL;
+
+        if (e->service)
+                free(e->service);
+        e->service = NULL;
+
+        if (e->host)
+                free(e->host);
+        e->host = NULL;
+
+        if (e->description)
+                free(e->description);
+        e->description = NULL;
+
+        if (e->n_tags > 0) {
+                int i;
+                for (i = 0; i < e->n_tags; i++) {
+                        free(e->tags[i]);
+                        e->tags[i] = NULL;
+                }
+                free(e->tags);
+                e->tags = NULL;
+                e->n_tags = 0;
+        }
+}
+
 void riemann_events_free(riemann_events_t *evts)
 {
         int i;
        
         for (i = 0; i < evts->n_events; i++) {
+                riemann_event_free(evts->events[i]);
                 xfree(evts->events[i]);
         }
         xfree(evts->events);

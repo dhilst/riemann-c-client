@@ -15,7 +15,7 @@ static char *hosts[] = {
         "host-9",
 };
 
-int main(void)
+int main(int argc, char **argv)
 {
         riemann_udp_client_t cli;
         riemann_events_t events;
@@ -25,6 +25,11 @@ int main(void)
         int error;
         int i;
 
+        if (argc != 3) {
+                fprintf(stderr, "Usage: %s <IP> <PORT>\n", argv[0]);
+                exit(EXIT_FAILURE);
+        }
+
         error = riemann_events_init(&events, 10); /* alloc space and initialize N events */
         if (error) {
                 fprintf(stderr, "Can't allocate events: %d\n", error);
@@ -33,8 +38,8 @@ int main(void)
         
         n_tags = sizeof(tags) / sizeof(tags[0]); /* number of tags */
         FOR_EACH_EVENT(events, i, evtp) {
-                riemann_event_set_host(evtp, hosts[i]);
-                riemann_event_set_service(evtp, "cpu-idle");
+                riemann_event_set_host(evtp, hosts[i]); 
+                riemann_event_set_service(evtp, "cpu-idle"); /* (char *) attributes are strdup'ed */
                 riemann_event_set_state(evtp, "ok");
                 riemann_event_set_metric_f(evtp, 100l);
                 riemann_event_set_tags(evtp, tags, n_tags);
@@ -42,7 +47,7 @@ int main(void)
         }
 
         cli = RIEMANN_UDP_CLIENT_INIT;
-        error = riemann_udp_client_create(&cli, "192.168.5.36", 5555);
+        error = riemann_udp_client_create(&cli, argv[1], atoi(argv[2]));
         if (error) {
                 fprintf(stderr, "Can't create UDP client\n");
                 exit(EXIT_FAILURE);
@@ -55,6 +60,6 @@ int main(void)
         }
 
         riemann_udp_client_free(&cli);
-        riemann_events_free(&events);
+        riemann_events_free(&events); /* free event attributes, and events */
         return 0;
 }
