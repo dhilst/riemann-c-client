@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/select.h>
+
 #include "riemann_client.h"
 
 static char *hosts[] = {
@@ -20,7 +22,7 @@ int main(int argc, char **argv)
         riemann_udp_client_t cli;
         riemann_events_t events;
         riemann_event_t *evtp;
-        char *tags[] = { "cpu", "performance", "load", };
+        const char *tags[] = { "cpu", "performance", "load", };
         int n_tags;
         int error;
         int i;
@@ -50,12 +52,6 @@ int main(int argc, char **argv)
         error = riemann_udp_client_create(&cli, argv[1], atoi(argv[2]));
         if (error) {
                 fprintf(stderr, "Can't create UDP client\n");
-                exit(EXIT_FAILURE);
-        }
-
-        error = riemann_events_send_udp(&cli, &events); 
-        if (error) {
-                fprintf(stderr, "Can't send data to UDP server\n");
                 exit(EXIT_FAILURE);
         }
 
