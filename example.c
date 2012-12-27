@@ -37,12 +37,12 @@ int main(int argc, char **argv)
         }
         
         n_tags = sizeof(tags) / sizeof(tags[0]); /* number of tags */
-        FOR_EACH_EVENT(events, i, evtp) {
-                riemann_event_set_host(evtp, hosts[i]); 
-                riemann_event_set_service(evtp, "cpu-idle"); /* (char *) attributes are strdup'ed */
+        FOR_EACH_EVENT(events, i, evtp) {        /* evtp points to each event (events->events[i]) inside FOR loop */
+                riemann_event_set_host(evtp, hosts[i]); /* i goes from 0 to events->n_events */
+                riemann_event_set_service(evtp, "cpu-idle"); /* (char *) attributes are strduped */
                 riemann_event_set_state(evtp, "ok");
                 riemann_event_set_metric_f(evtp, 100l);
-                riemann_event_set_tags(evtp, tags, n_tags);
+                riemann_event_set_tags(evtp, tags, n_tags); /* tags are strdupded too */
                 riemann_event_set_description(evtp, "Percent cpu idle time");
         }
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
         }
 
-        error = riemann_events_send_udp(&cli, &events);
+        error = riemann_events_send_udp(&cli, &events); 
         if (error) {
                 fprintf(stderr, "Can't send data to UDP server\n");
                 exit(EXIT_FAILURE);
