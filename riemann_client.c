@@ -55,10 +55,10 @@ int riemann_events_init(riemann_events_t *events, size_t n_events)
                 if (!events->events[i]) { 
                         int j;
                         for (j = 0; j < i; j++) {
-                                free(events->events[i]);
-                                events->events[i] = NULL;
+                                xfree(events->events[j]);
+                                events->events[j] = NULL;
                         }
-                        free(events->events);
+                        xfree(events->events);
                         return -2;
                 }
                 riemann_event_init(events->events[i]);
