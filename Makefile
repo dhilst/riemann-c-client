@@ -4,6 +4,7 @@ subdirs := src
 all :
 	cd src; $(MAKE)
 
+.PHONY : clean
 clean : 
 	find . -name "*~" -exec rm {} \;
 	find . -name "cscope.*" -exec rm {} \;

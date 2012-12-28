@@ -1,7 +1,7 @@
 #ifndef RIEMANN_QUERY_H
 # define RIEMANN_QUERY_H
 
-#include "proto.pb-c.h"
+#include "riemann/proto.pb-c.h"
 
 typedef Query riemann_query_t;
 

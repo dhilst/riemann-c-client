@@ -5,7 +5,7 @@
 
 #include "riemann/query.h"
 #include "riemann/event.h"
-#include "proto.pb-c.h"
+#include "riemann/proto.pb-c.h"
 
 typedef Msg riemann_message_t;
 

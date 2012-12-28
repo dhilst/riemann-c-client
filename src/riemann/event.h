@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "riemann/common.h"
-#include "proto.pb-c.h"
+#include "riemann/proto.pb-c.h"
 
 typedef Event riemann_event_t;
 #define RIEMANN_EVENT_INIT EVENT__INIT
