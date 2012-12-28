@@ -1,23 +1,24 @@
-objs := riemann_client.o common.o udp.o proto.pb-c.o
+objs := riemann_client.o common.o proto.pb-c.o tcp.o
+protofiles = proto.pb-c.h proto.pb-c.c
 
 CFLAGS := -Wall -Werror
 
 libriemann_client.so: $(objs)
 	gcc $(CFLAGS) $(LDFLAGS) -shared -o libriemann_client.so $(objs) -lprotobuf-c
 
-riemann_client.o: riemann_client.c proto.pb-c.[hc]
+riemann_client.o: riemann_client.c riemann_client.h $(protofiles)
 	gcc $(CFLAGS) $(LDFLAGS) -fPIC -c riemann_client.c
 
 common.o: common.h common.c
 	gcc $(CFLAGS) $(LDFLAGS) -fPIC -c common.c 
 
-udp.o: udp.c udp.h
-	gcc $(CFLAGS) $(LDFLAGS) -fPIC -c udp.c
+tcp.o: tcp.h tcp.c
+	gcc $(CFLAGS) $(LDFLAGS) -fPIC -c tcp.c
 
-proto.pb-c.o: proto.pb-c.[hc]
+proto.pb-c.o: $(protofiles)
 	gcc $(CFLAGS) $(LDFLAGS) -fPIC -c proto.pb-c.c
 
-proto.pb-c.[hc]: proto.proto
+$(protofiles): proto.proto
 	protoc-c --c_out=$(PWD) proto.proto
 
 example.o: example.c riemann_client.h

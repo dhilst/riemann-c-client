@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
-#include <sys/select.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 #include "riemann_client.h"
 
@@ -19,10 +21,9 @@ static char *hosts[] = {
 
 int main(int argc, char **argv)
 {
-        riemann_udp_client_t cli;
         riemann_events_t events;
         riemann_event_t *evtp;
-        const char *tags[] = { "cpu", "performance", "load", };
+        const char *tags[] = { "cpu", "performance", "load", "tcp"};
         int n_tags;
         int error;
         int i;
@@ -44,18 +45,24 @@ int main(int argc, char **argv)
                 riemann_event_set_service(evtp, "cpu-idle"); /* (char *) attributes are strduped */
                 riemann_event_set_state(evtp, "ok");
                 riemann_event_set_metric_f(evtp, 100l);
+                riemann_event_set_ttl(evtp, 3);
                 riemann_event_set_tags(evtp, tags, n_tags); /* tags are strdupded too */
                 riemann_event_set_description(evtp, "Percent cpu idle time");
         }
 
-        cli = RIEMANN_UDP_CLIENT_INIT;
-        error = riemann_udp_client_create(&cli, argv[1], atoi(argv[2]));
+        riemann_tcp_client_t cli = RIEMANN_TCP_CLIENT_INIT;
+        error = riemann_tcp_client_connect(&cli, argv[1], atoi(argv[2]));
         if (error) {
-                fprintf(stderr, "Can't create UDP client\n");
+                fprintf(stderr, "Can't create tcp client\n");
                 exit(EXIT_FAILURE);
         }
 
-        riemann_udp_client_free(&cli);
+        error = riemann_tcp_client_send_events(&events, &cli, MSG_DONTWAIT, NULL);
+        if (error) {
+                fprintf(stderr, "Can't send data to server\n");
+                exit(EXIT_FAILURE);
+        }
+
         riemann_events_free(&events); /* free event attributes, and events */
         return 0;
 }
