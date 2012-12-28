@@ -6,22 +6,22 @@
 #include "common.h"
 #include "proto.pb-c.h"
 
-static void riemann_event_init(riemann_event_t *evt)
+void riemann_event_init(riemann_event_t *evt)
 {
         event__init((Event *) evt);
 }
 
-static riemann_event_t *riemann_event_alloc_event(void)
+riemann_event_t *riemann_event_alloc_event(void)
 {
         return (malloc(sizeof (riemann_event_t)));
 }
 
-static riemann_event_t **rieman_event_alloc_events(size_t n_events)
+riemann_event_t **rieman_event_alloc_events(size_t n_events)
 {
         return (malloc(sizeof (riemann_event_t *) * n_events));
 }
 
-static void riemann_event_free(riemann_event_t *e)
+void riemann_event_free(riemann_event_t *e)
 {
         if (e->state)
                 free(e->state);

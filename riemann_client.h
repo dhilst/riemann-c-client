@@ -20,10 +20,12 @@ typedef struct riemann_events_s riemann_events_t;
 #define FOR_EACH_EVENT(events, i, evtp) \
         for(i = 0, evtp = events.events[i]; i < events.n_events; i++, evtp = events.events[i])
 
-
+void riemann_event_init(riemann_event_t *evt);
+riemann_event_t *riemann_event_alloc_event(void);
+riemann_event_t **rieman_event_alloc_events(size_t n_events);
+void riemann_event_free(riemann_event_t *e);
 int riemann_events_init(riemann_events_t *events, size_t n_events);
 void riemann_events_free(riemann_events_t *evts);
-int riemann_events_send_stream(riemann_events_t *evts, FILE *stream);
 void riemann_event_set_host(riemann_event_t *evtp, const char *host);
 void riemann_event_set_service(riemann_event_t *evtp, const char *service);
 void riemann_event_set_state(riemann_event_t *evtp, const char *state);
@@ -34,7 +36,6 @@ int riemann_event_set_tags(riemann_event_t *evtp, const char **tags, size_t n_ta
 void  riemann_event_set_ttl(riemann_event_t *evtp, float ttl);
 void riemann_event_set_metric_sint64(riemann_event_t *evtp, int64_t metric);
 void riemann_event_set_metric_d(riemann_event_t *evtp, double metric);
-
 
 
 #endif

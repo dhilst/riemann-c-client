@@ -45,7 +45,7 @@ int main(int argc, char **argv)
                 riemann_event_set_service(evtp, "cpu-idle"); /* (char *) attributes are strduped */
                 riemann_event_set_state(evtp, "ok");
                 riemann_event_set_metric_f(evtp, 100l);
-                riemann_event_set_ttl(evtp, 3);
+                /* riemann_event_set_ttl(evtp, 3); */
                 riemann_event_set_tags(evtp, tags, n_tags); /* tags are strdupded too */
                 riemann_event_set_description(evtp, "Percent cpu idle time");
         }
@@ -63,6 +63,10 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
         }
 
+        if(riemann_tcp_client_recv_ack(&cli, 0, NULL))
+                puts("ack received"); 
+
         riemann_events_free(&events); /* free event attributes, and events */
+
         return 0;
 }
