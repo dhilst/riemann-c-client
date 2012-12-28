@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include "riemann/event.h"
 #include "riemann/message.h"
@@ -24,10 +25,11 @@ static const char *tags[] = {
 int main(int argc, char **argv)
 {
         riemann_message_t msg = RIEMANN_MSG_INIT;
-        riemann_message_t *resp;
+        riemann_message_t *resp = NULL;
         riemann_event_t **events;
         size_t n_events = STATIC_ARRAY_SIZE(cpus);
         int i;
+        int error;
         riemann_client_t cli = RIEMANN_CLIENT_INIT;
 
         if (argc != 3) {
@@ -50,9 +52,20 @@ int main(int argc, char **argv)
 
         riemann_message_set_events(&msg, events, n_events);
         
-        riemann_client_connect(&cli, TCP, argv[1], atoi(argv[2]));
-        riemann_client_send_message(&cli, &msg, 0, NULL);
-        resp = riemann_client_recv_message(&cli, 0, NULL);
+        error = riemann_client_connect(&cli, TCP, argv[1], atoi(argv[2])); /* functions that returns ints returns 0 on success */
+        if (error) {
+                fprintf(stderr, "Can't connectd: strerror(%s) gai_strerrror(%s)\n", strerror(errno), gai_strerror(error));
+                exit(EXIT_FAILURE);
+        }
+
+        error = riemann_client_send_message(&cli, &msg, 0, NULL);
+        if (error) {
+                fprintf(stderr, "Can't send message: %s\n", strerror(errno));
+                exit(EXIT_FAILURE);
+        }
+
+        resp = riemann_client_recv_message(&cli, 0, NULL); /* functions that returns pointers rertuns NULL on failure */
+        assert(resp);
 
         if (!resp->ok) {
                 fprintf(stderr, "Message error %s\n", resp->error);

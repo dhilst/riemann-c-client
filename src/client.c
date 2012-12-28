@@ -21,7 +21,7 @@ int riemann_client_connect(riemann_client_t *cli, int type, char *hostname, int 
 
         error = getaddrinfo(hostname, NULL, &saddr, &psaddr);
         if (error) {
-                return -2;
+                return error;
         }
 
         sock = socket(psaddr->ai_family, psaddr->ai_socktype, 0);
