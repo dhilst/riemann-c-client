@@ -1,10 +1,4 @@
-#include <endian.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "riemann_client.h"
-#include "common.h"
-#include "proto.pb-c.h"
+#include "riemann/event.h"
 
 void riemann_event_init(riemann_event_t *evt)
 {
@@ -16,7 +10,7 @@ riemann_event_t *riemann_event_alloc_event(void)
         return (malloc(sizeof (riemann_event_t)));
 }
 
-riemann_event_t **rieman_event_alloc_events(size_t n_events)
+riemann_event_t **riemann_event_alloc_events(size_t n_events)
 {
         return (malloc(sizeof (riemann_event_t *) * n_events));
 }
@@ -50,43 +44,16 @@ void riemann_event_free(riemann_event_t *e)
                 e->n_tags = 0;
         }
 }
-                                                
-int riemann_events_init(riemann_events_t *events, size_t n_events)
-{
-        int i;
 
-        events->events = rieman_event_alloc_events(n_events);
-        if (!events->events)
-                return -1;
-        events->n_events = n_events;
-
-        for (i = 0; i < n_events; i++) {
-                events->events[i] = riemann_event_alloc_event();
-                if (!events->events[i]) { 
-                        int j;
-                        for (j = 0; j < i; j++) {
-                                xfree(events->events[j]);
-                                events->events[j] = NULL;
-                        }
-                        xfree(events->events);
-                        return -2;
-                }
-                riemann_event_init(events->events[i]);
-        }
-        return 0;
-}
-
-
-void riemann_events_free(riemann_events_t *evts)
+void riemann_events_free(riemann_event_t **evts, size_t n_events)
 {
         int i;
        
-        for (i = 0; i < evts->n_events; i++) {
-                riemann_event_free(evts->events[i]);
-                xfree(evts->events[i]);
+        for (i = 0; i < n_events; i++) {
+                riemann_event_free(evts[i]);
+                xfree(evts[i]);
         }
-        xfree(evts->events);
-        evts->n_events = 0;
+        xfree(evts);
 }
 
 void riemann_event_set_host(riemann_event_t *evtp, const char *host)

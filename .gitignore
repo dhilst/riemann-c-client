@@ -15,4 +15,7 @@
 *.exe
 *.out
 *.app
-examples/*_events
+
+proto.pb-c.*
+cscope.*
+*~
