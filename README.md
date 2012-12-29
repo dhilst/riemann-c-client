@@ -8,7 +8,7 @@ O client library to rieman writen in C
 - Improve error signaling, return kind of errno
 - Implement UDP code
 - Create a install target 
-- Port to libtools
+- Improve configure.ac checks
 - Doxygen?
 - Improve installation instructions
 
