@@ -38,7 +38,6 @@ Also you will need autotools to run build.sh
 ./configure --prefix=${HOME}
 make
 ```
-This will create the libriemann_client.so on src dir. Also will create examples on example directory
 
 3. Install!?<br/>
 ```
