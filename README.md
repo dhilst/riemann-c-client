@@ -8,7 +8,8 @@ O client library to rieman writen in C
 - Improve error signaling, return kind of errno
 - Implement UDP code
 - Create a install target 
-- Improve configure.ac checks
+- Autotools
+  - Write INSTALL and README 
 - Doxygen?
 - Improve installation instructions
 
@@ -26,12 +27,15 @@ git clone https://github.com/gkos/riemann-c-client-lib.git
 2. Build<br/>
 You need protobuf-c installed and on your path to do this. You can find it at http://code.google.com/p/protobuf-c/
 ```
+./configure --prefix=${HOME}
 make
 ```
 This will create the libriemann_client.so on src dir. Also will create examples on example directory
 
 3. Install!?<br/>
-This is not yet implemented, but you can move libriemann_client.so to your /usr/local/lib and use it from there.
+```
+make install
+```
 
 # Usage
 Check examples directory for usage hints
