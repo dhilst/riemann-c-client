@@ -10,6 +10,13 @@ AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CC
+AC_CHECK_PROG([HAS_PROTOC_C], [protoc-c], [yes])
+if test x$HAS_PROTO_C != x"yes" ; then
+   AC_MSG_ERROR([You need protoc-c installed and on your path to proceed. You can find it at http://code.google.com/p/protobuf-c/])
+fi
+                
+                          
+
 
 # Checks for libraries.
 AC_CHECK_LIB(protobuf-c, protobuf_c_message_init)
