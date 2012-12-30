@@ -29,6 +29,17 @@ void riemann_message_free(riemann_message_t *msg)
         msg__free_unpacked(msg, NULL);
 }        
 
+uint8_t *riemann_message_to_buffer(riemann_message_t *msg, size_t *len)
+{
+        uint8_t *buf; 
+        
+        *len = msg__get_packed_size(msg);
+        buf = malloc(*len);
+        assert(buf);
+        msg__pack(msg, buf);
+        return buf;
+}
+
 uint8_t *riemann_message_to_tcp_buffer(riemann_message_t *msg, size_t *len)
 {
         uint8_t *buf;

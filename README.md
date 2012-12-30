@@ -6,7 +6,8 @@ O client library to rieman writen in C
 - Improve TCP code
   - Implement timeout (select)
 - Improve error signaling, return kind of errno
-- Implement UDP code
+- Improve UDP code
+  - Does riemann responds UDP?
 - Implement an alternative to getaddrinfo(), (gethostbyname!?)
   at compile time, using config.h
 - Autotools

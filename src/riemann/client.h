@@ -1,6 +1,7 @@
 #ifndef RIEMANN_CLIENT_H
 # define RIEMANN_CLIENT_H
 
+#include <netdb.h>
 
 #include "riemann/message.h"
 

@@ -67,13 +67,22 @@ int riemann_client_send_message(riemann_client_t *cli, riemann_message_t *msg, i
                 if (error)
                         return -2;
 
+                return 0;
                 
         } else if (cli->type == UDP) {
-                return -3;      /* Not implemented */
+                buf = riemann_message_to_buffer(msg, &len);
+                if (!buf)
+                        return -3;
+
+                error = riemann_udp_send(cli, buf, len, flags, tout);
+                if (error)
+                        return -4;
+
+                return 0;
         } else {
                 return -8;
         }
-        return 0;
+        return -15;
 }
 
 riemann_message_t *riemann_client_recv_message(riemann_client_t *cli, int flags, struct timeval *tout)

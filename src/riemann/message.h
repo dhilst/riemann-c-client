@@ -17,6 +17,7 @@ void riemann_message_set_events(riemann_message_t *msg,
                                riemann_event_t **evts, 
                                size_t n_events);
 void riemann_message_free(riemann_message_t *msg);        
+uint8_t *riemann_message_to_buffer(riemann_message_t *msg, size_t *len);
 uint8_t *riemann_message_to_tcp_buffer(riemann_message_t *msg, size_t *len);
 riemann_message_t *riemann_buf_to_message(uint8_t *buf, size_t len);
 
