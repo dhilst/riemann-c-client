@@ -15,9 +15,17 @@ O client library to rieman writen in C
   - Write INSTALL and README 
   - Improve checks (I haven't take a look on this yet)
 - Provide tarball downloads
-- Start versioning **
+- Implement locking system configurable at compile time. (./configure --with-thread_safe)
 - Doxygen?
 - Improve installation instructions
+- Git log ChangeLog's.
+- Test on this enviroments
+  - AIX
+  - Solaris
+  - FreeBSD
+  - CygWin
+  
+  
 
 ** next
 

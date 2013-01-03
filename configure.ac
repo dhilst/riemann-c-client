@@ -1,10 +1,18 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
+# Autoconf init
 AC_PREREQ([2.68])
-AC_INIT([libriemann_client], [0.1], [danielhilst@gmail.com])
+AC_INIT([libriemann_client], [0.0.0], [danielhilst@gmail.com])
+
+# Automake init
 AM_INIT_AUTOMAKE 
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
+# Libtool init
 LT_INIT
+AC_CONFIG_MACRO_DIR([m4])
+
 AC_CONFIG_SRCDIR([src/tcp.c])
 AC_CONFIG_HEADERS([config.h])
 
