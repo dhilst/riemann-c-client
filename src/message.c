@@ -1,3 +1,5 @@
+#include <arpa/inet.h>
+
 #include "riemann/message.h"
 
 void riemann_message_set_query(riemann_message_t *msg,
@@ -47,7 +49,7 @@ uint8_t *riemann_message_to_tcp_buffer(riemann_message_t *msg, size_t *len)
 
         *len = msg__get_packed_size(msg);
 
-        header = htobe32(*len);    /* header */
+        header = htonl(*len);    /* header */
         buf = malloc(*len + sizeof(header));
         assert(buf);
 

@@ -1,3 +1,5 @@
+#include <arpa/inet.h>
+
 #include "riemann/client.h"
 
 int riemann_client_connect(riemann_client_t *cli, int type, char *hostname, int port)
@@ -99,7 +101,7 @@ riemann_message_t *riemann_client_recv_message(riemann_client_t *cli, int flags,
                 if (header == -1)
                         return NULL;
 
-                len = be32toh(header);
+                len = ntohl(header);
                 buf = malloc(len);
                 assert(buf);
 

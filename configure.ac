@@ -22,13 +22,12 @@ AC_CHECK_PROG([HAS_PROTOC_C], [protoc-c], [yes])
 if test x$HAS_PROTOC_C != x"yes" ; then
    AC_MSG_ERROR([You need protoc-c installed and on your path to proceed. You can find it at http://code.google.com/p/protobuf-c/])
 fi
-                
 
 # Checks for libraries.
 AC_CHECK_LIB(protobuf-c, protobuf_c_message_init)
 
 # Checks for header files.
-AC_CHECK_HEADERS([arpa/inet.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
+AC_CHECK_HEADERS([assert.h arpa/inet.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_INT64_T
@@ -37,10 +36,11 @@ AC_TYPE_SSIZE_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT8_T
 
+AC_CHECK_TYPES([struct addrinfo], [], [], [[#include <netdb.h>]])
+
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([memset socket strdup strerror getaddrinfo])
-
 
 
 AC_CONFIG_FILES([Makefile 
