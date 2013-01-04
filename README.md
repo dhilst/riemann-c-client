@@ -104,7 +104,7 @@ a response.
 riemann_message_t *resp = NULL;
 resp = riemann_client_recv_message(&cli, 0, NULL);
 if (resp->ok)
-   puts("SUCESS"); /* your message was received with success */
+   puts("SUCCESS"); /* your message was received with success */
 ```
 
 Responses need to be freed. Also events and clients.
