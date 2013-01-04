@@ -19,11 +19,13 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-0.0.0.tar.g
 - Improve UDP code
   - Does riemann responds UDP?
 - Autotools
+  - Add --with-libprotobuf-c=libprotobuf-c_DIR option to configure
   - Implement an alternative to getaddrinfo(), (gethostbyname!?)
     at compile time, using config.h
   - Start using config.h
   - Write INSTALL and README 
   - Improve checks (I haven't take a look on this yet)
+    - Add failure when fails to link against protobuf-c 
 - Implement locking system configurable at compile time. (./configure --with-thread_safe)
 - Doxygen?
 - Git log ChangeLog's.
@@ -32,6 +34,7 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-0.0.0.tar.g
   - Solaris
   - FreeBSD
   - CygWin
+    - Add -no-undefined to libriemann_clients.* flags
   
 
 ## Install
