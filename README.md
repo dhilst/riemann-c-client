@@ -19,7 +19,6 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-0.0.0.tar.g
 - Improve UDP code
     - Does riemann responds UDP?
 - Autotools
-  	- Add --with-libprotobuf-c=libprotobuf-c_DIR option to configure
   	- Implement an alternative to getaddrinfo(), (gethostbyname!?)	
     at compile time, using config.h
     - Start using config.h
