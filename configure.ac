@@ -24,9 +24,36 @@ if test x$HAS_PROTOC_C != x"yes" ; then
 fi
 
 # Checks for libraries.
-AC_CHECK_LIB(protobuf-c, protobuf_c_message_init)
+
+# Check for protobuf-c
+AC_ARG_WITH(protobuf-c-dir, AC_HELP_STRING([--with-protobuf-c-dir], [Path to protobuf-c]), 
+[
+	if test "x$withval" != "xno" && test "x$withval" != "xyes"; then
+                AC_SUBST(PROTOBUF_C_LDFLAGS, [-L${withval}/lib])
+                AC_SUBST(PROTOBUF_C_CFLAGS, [-I${withval}/include])
+                PROTOBUF_C_LDFLAGS="-L$withval/lib"
+                PROTOBUF_C_CFLAGS="-I$withval/include"
+        fi
+])
+
+( # New shell to mask CFLAGS and LDFLAGS
+        LDFLAGS="$PROTOBUF_C_LDFLAGS $LDFLAGS"
+        AC_CHECK_LIB(protobuf-c, protobuf_c_message_init, [], 
+        [
+                AC_MSG_ERROR([Can't link against protobuf-c lib, use --with-protobuf-c-dir= for non-standard directories])
+        ])
+) || exit 1
 
 # Checks for header files.
+( # New shell to mask CFLAGS and LDFLAGS
+        CFLAGS="$PROTOBUF_C_CFLAGS $CFLAGS"
+        AC_CHECK_HEADERS([google/protobuf-c/protobuf-c.h], [],
+        [
+                AC_MSG_ERROR([google/protobuf-c/protobuf-c.h not found, use --with-protobuf-c-dir= for non-standard directories])
+        ])
+) || exit 1 
+
+
 AC_CHECK_HEADERS([assert.h arpa/inet.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
