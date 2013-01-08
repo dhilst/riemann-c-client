@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include "riemann/event.h"
-#include "riemann/message.h"
-#include "riemann/client.h"
+#include <riemann/event.h>
+#include <riemann/message.h>
+#include <riemann/client.h>
 
 static char *cpus[] = {
         "cpu-0",

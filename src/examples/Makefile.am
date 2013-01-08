@@ -1,6 +1,6 @@
 AM_CFLAGS = -I.. $(PROTOBUF_C_CFLAGS)
-AM_LDFLAGS = -L../.libs -lriemann_client $(PROTOBUF_C_LDFLAGS)
 
+LDADD = ../libriemann_client.la
 bin_PROGRAMS = exmp01 exmp02 exmp03
 
 

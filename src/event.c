@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "riemann/event.h"
 
 void riemann_event_init(riemann_event_t *evt)

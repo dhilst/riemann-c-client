@@ -1,5 +1,7 @@
 #include <arpa/inet.h>
 
+#include "riemann/tcp.h"
+#include "riemann/udp.h"
 #include "riemann/client.h"
 
 int riemann_client_connect(riemann_client_t *cli, int type, char *hostname, int port)

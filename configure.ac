@@ -3,7 +3,7 @@
 
 # Autoconf init
 AC_PREREQ([2.68])
-AC_INIT([libriemann_client], [0.0.0], [danielhilst@gmail.com])
+AC_INIT([libriemann_client], [1.0.0], [danielhilst@gmail.com])
 
 # Automake init
 AM_INIT_AUTOMAKE 

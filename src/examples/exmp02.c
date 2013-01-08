@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "riemann/event.h"
-#include "riemann/query.h"
-#include "riemann/message.h"
-#include "riemann/client.h"
+#include <riemann/event.h>
+#include <riemann/query.h>
+#include <riemann/message.h>
+#include <riemann/client.h>
 
 #define STATIC_ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
