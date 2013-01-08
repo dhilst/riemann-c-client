@@ -3,7 +3,7 @@
 O client library to rieman writen in C
 
 ## Download 
-https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-0.0.0.tar.gz
+https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-1.0.0.tar.gz
 
 ## Features
 - TCP and UDP support for sending events
@@ -38,14 +38,14 @@ WARNING: This is in really early stages, and was not fully tested.
 
 1. Download and extract
 ```
-# wget 'https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-0.0.0.tar.gz' -O libriemann_client-0.0.0.tar.gz
-# tar xf libriemann_client-0.0.0.tar.gz
+# wget 'https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-1.0.0.tar.gz' -O libriemann_client-1.0.0.tar.gz
+# tar xf libriemann_client-1.0.0.tar.gz
 ```
 
 2. Build
 ```
-# cd libriemann_client-0.0.0
-# ./configure
+# cd libriemann_client-1.0.0
+# ./configure --with-protobuf-c-dir=/root/usr/protobuf-c
 # make
 ```
 
@@ -57,9 +57,9 @@ WARNING: This is in really early stages, and was not fully tested.
 ## Usage
 Include you the headers
 ```C
-#include "riemann/event.h"
-#include "riemann/message.h"
-#include "riemann/client.h"
+#include <riemann/event.h>
+#include <riemann/message.h>
+#include <riemann/client.h>
 ```
 
 Create messages. Queries and Events are send attached in messages.
@@ -114,8 +114,9 @@ riemann_client_free(&cli);
 
 When compiling your code, link it against libriemann_client
 ```
-# cc -o your_program your_code.c -lriemann_client
+# cc -o your_program your_code.c -lriemann_client -L/usr/local/lib -I/usr/local/include
 ```
+
 
 For complete examples look at src/examples directory.
 
