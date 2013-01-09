@@ -62,9 +62,9 @@ Create messages. Queries and Events are send attached in messages.
 Also create a client, this will be your connection to riemann
 server. riemann_client_connect() returns non-zero on failure.
 ```C
+int error;
 riemann_message_t msg = RIEMANN_MSG_INIT;
 riemann_client_t cli;
-int error = riemann_client_connect(&cli, TCP, "localhost", 5555);
 ```
 
 If you'll send events create the events and alloc them. There no
