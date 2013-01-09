@@ -63,7 +63,7 @@ Also create a client, this will be your connection to riemann
 server. riemann_client_connect() returns non-zero on failure.
 ```C
 riemann_message_t msg = RIEMANN_MSG_INIT;
-riemann_client_t cli = RIEMANN_CLIENT_INIT;
+riemann_client_t cli;
 int error = riemann_client_connect(&cli, TCP, "localhost", 5555);
 ```
 
@@ -89,6 +89,10 @@ Send the message! 3th parameter is flags to be passed to send() call,
 4th parameter is a timeout struct(struct timeval), but this is not
 implemented yet, so just passes NULL.
 ```C
+error = riemann_client_init(&cli);
+error = riemann_client_connect(&cli, 
+                               "riemann.batmansion.org, 
+                               5555);
 error = riemann_client_send_message(&cli, &msg, 0, NULL);
 ```
 
