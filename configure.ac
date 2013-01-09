@@ -3,7 +3,7 @@
 
 # Autoconf init
 AC_PREREQ([2.68])
-AC_INIT([libriemann_client], [1.0.0], [danielhilst@gmail.com])
+AC_INIT([libriemann_client], [2.0.0], [danielhilst@gmail.com])
 
 # Automake init
 AM_INIT_AUTOMAKE 
@@ -15,6 +15,7 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_SRCDIR([src/tcp.c])
 AC_CONFIG_HEADERS([config.h])
+AX_PREFIX_CONFIG_H([src/riemann/_config.h], [RIEMANN])
 
 # Checks for programs.
 AC_PROG_CC
@@ -24,6 +25,14 @@ if test x$HAS_PROTOC_C != x"yes" ; then
 fi
 
 # Checks for libraries.
+
+AC_ARG_ENABLE(lock, AC_HELP_STRING([--enable-lock], [Use lock system]), 
+[
+        AC_CHECK_HEADERS([pthread.h], 
+                         [AC_DEFINE([WITH_LOCK], [1], [Use lock system])],
+                         [AC_ERROR([--enable-lock passed but no pthread.h header found])])
+        AC_SUBST([WITH_LOCK_LDFLAGS], [-lpthread])
+])
 
 # Check for protobuf-c
 AC_ARG_WITH(protobuf-c-dir, AC_HELP_STRING([--with-protobuf-c-dir], [Path to protobuf-c]), 
@@ -54,6 +63,7 @@ AC_ARG_WITH(protobuf-c-dir, AC_HELP_STRING([--with-protobuf-c-dir], [Path to pro
 ) || exit 1 
 
 
+
 AC_CHECK_HEADERS([assert.h arpa/inet.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -73,5 +83,6 @@ AC_CHECK_FUNCS([memset socket strdup strerror getaddrinfo])
 AC_CONFIG_FILES([Makefile 
                  src/Makefile 
                  src/examples/Makefile])
+
 AC_OUTPUT
 

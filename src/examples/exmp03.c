@@ -29,7 +29,7 @@ int main(int argc, char **argv)
         size_t n_events = STATIC_ARRAY_SIZE(cpus);
         int i;
         int error;
-        riemann_client_t cli = RIEMANN_CLIENT_INIT;
+        riemann_client_t cli;
 
         if (argc != 3) {
                 fprintf(stderr, "%s <IP> <PORT>\n", argv[0]);
@@ -54,6 +54,12 @@ int main(int argc, char **argv)
         error = riemann_client_connect(&cli, UDP, argv[1], atoi(argv[2]));
         if (error) {
                 fprintf(stderr, "Can't connectd: strerror(%s) gai_strerrror(%s)\n", strerror(errno), gai_strerror(error));
+                exit(EXIT_FAILURE);
+        }
+
+        error = riemann_client_init(&cli);
+        if (error) {
+                fprintf(stderr, "Can't initialize client: strerror(%s)\n", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 

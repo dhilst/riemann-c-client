@@ -26,22 +26,20 @@ int main(int argc, char **argv)
 {
         riemann_message_t msg = RIEMANN_MSG_INIT;
         riemann_message_t *resp = NULL;
-        riemann_event_t **events;
         size_t n_events = STATIC_ARRAY_SIZE(cpus);
+        riemann_event_t *events[n_events]; /* using stack space */
+
         int i;
         int error;
-        riemann_client_t cli = RIEMANN_CLIENT_INIT;
+        riemann_client_t cli;
 
         if (argc != 3) {
                 fprintf(stderr, "%s <IP> <PORT>\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
 
-        events = riemann_event_alloc_events(n_events);
-        assert(events);
         for (i = 0; i < n_events; i++) {
-                events[i] = riemann_event_alloc_event();
-                assert(events[i]);
+                events[i] = alloca(sizeof (riemann_event_t));
                 riemann_event_init(events[i]);
                 riemann_event_set_host(events[i], "gentoo-x86");
                 riemann_event_set_service(events[i], cpus[i]);
@@ -52,6 +50,12 @@ int main(int argc, char **argv)
 
         riemann_message_set_events(&msg, events, n_events);
         
+        error = riemann_client_init(&cli);
+        if (error) {
+                fprintf(stderr, "Can't initialize client: strerror(%s)\n", strerror(errno));
+                exit(EXIT_FAILURE);
+        }
+
         error = riemann_client_connect(&cli, TCP, argv[1], atoi(argv[2])); /* functions that returns ints returns 0 on success */
         if (error) {
                 fprintf(stderr, "Can't connectd: strerror(%s) gai_strerrror(%s)\n", strerror(errno), gai_strerror(error));
@@ -75,7 +79,6 @@ int main(int argc, char **argv)
         }
 
         riemann_message_free(resp); /* responses should be freed */
-        riemann_events_free(events, n_events);
         riemann_client_free(&cli);
 
         return 0;

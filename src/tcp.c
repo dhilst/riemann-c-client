@@ -1,4 +1,5 @@
-#include "riemann/tcp.h"
+#include <riemann/_config.h> 
+#include "riemann/tcp.h"        /* This header will not be installed so I use `"' */
 
 int riemann_tcp_recv(riemann_client_t *cli, uint8_t *buf, size_t len, int flags, struct timeval *tout, ssize_t *recv_bytes)
 {
@@ -8,7 +9,13 @@ int riemann_tcp_recv(riemann_client_t *cli, uint8_t *buf, size_t len, int flags,
         assert(buf);
         assert(len >= 0);
 
+#ifdef RIEMANN_WITH_LOCK
+        pthread_mutex_lock(&cli->mutex);
+#endif
         bytes = recv(cli->sock, buf, len, flags);
+#ifdef RIEMANN_WITH_LOCK
+        pthread_mutex_unlock(&cli->mutex);
+#endif
         if (bytes == -1) {
                 fprintf(stderr, "tcp.c riemann_tcp_client_recv(%d): Error while receiving data from server: %s\n", __LINE__, strerror(errno));
                 return -1;
@@ -27,7 +34,14 @@ int riemann_tcp_send(riemann_client_t *cli, uint8_t *buf, size_t len, int flags,
         assert(buf);
         assert(len >= 0);
 
+#ifdef RIEMANN_WITH_LOCK
+        pthread_mutex_lock(&cli->mutex);
+#endif
         bytes = send(cli->sock, buf, len, flags);
+#ifdef RIEMANN_WITH_LOCK
+        pthread_mutex_unlock(&cli->mutex);
+#endif
+      
         if (bytes == -1) {
                 return -1;
         }

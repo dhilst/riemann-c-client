@@ -14,7 +14,7 @@ int main(int argc, char **argv)
         riemann_message_t msg = RIEMANN_MSG_INIT;
         riemann_message_t *resp; 
         riemann_query_t qry = RIEMANN_QUERY_INIT;
-        riemann_client_t cli = RIEMANN_CLIENT_INIT;
+        riemann_client_t cli;
         int i;
 
         if (argc != 3) {
@@ -25,6 +25,7 @@ int main(int argc, char **argv)
         riemann_query_set_string(&qry, "true");
         riemann_message_set_query(&msg, &qry);
 
+        riemann_client_init(&cli);
         riemann_client_connect(&cli, TCP, argv[1], atoi(argv[2]));
         riemann_client_send_message(&cli, &msg, 0, NULL);
         resp = riemann_client_recv_message(&cli, 0, NULL);

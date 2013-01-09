@@ -1,5 +1,6 @@
 #ifndef RIEMANN_TCP_H
 # define RIEMANN_TCP_H
+#include <riemann/_config.h>
 
 #include <assert.h>
 #include <arpa/inet.h>

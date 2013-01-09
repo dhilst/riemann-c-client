@@ -1,8 +1,42 @@
+#include <riemann/_config.h>
+
 #include <arpa/inet.h>
+
+#ifdef RIEMANN_WITH_LOCK
+# include <pthread.h>
+#endif
 
 #include "riemann/tcp.h"
 #include "riemann/udp.h"
 #include "riemann/client.h"
+
+
+int riemann_client_init(riemann_client_t *cli)
+{
+        int error;
+#ifdef RIEMANN_WITH_LOCK
+        pthread_mutexattr_t attr;
+#endif
+        /* Like old macro */
+        cli->sock = -1;          
+        cli->srv_addrinfo = NULL;
+
+#ifdef RIEMANN_WITH_LOCK
+        error = pthread_mutexattr_init(&attr);
+        if (error)
+                return error;
+        
+        error = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+        if (error)
+                return error;
+
+        error = pthread_mutex_init(&cli->mutex, &attr);
+        if (error)
+                return error;
+#endif
+
+        return 0;
+}
 
 int riemann_client_connect(riemann_client_t *cli, int type, char *hostname, int port)
 {
@@ -54,6 +88,10 @@ void riemann_client_free(riemann_client_t *cli)
                 freeaddrinfo(cli->srv_addrinfo);
                 cli->srv_addrinfo = NULL;
         }
+
+#ifdef RIEMANN_WITH_LOCK
+        pthread_mutex_destroy(&cli->mutex);
+#endif
 }
 
 int riemann_client_send_message(riemann_client_t *cli, riemann_message_t *msg, int flags, struct timeval *tout)
