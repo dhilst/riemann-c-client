@@ -1,0 +1,507 @@
+commit 8e20c7a
+Author: gkos <danielhilst@gmail.com>
+Date:   2013-01-09
+
+    --enable-lock implemented.
+    
+    It uses phtread recursive mutexes. Its initialized by
+    riemann_client_init. I have to drop RIEMANN_CLIENT_INIT, but
+    riemann_client_init does the exactly same job if --disable-lock is
+    passed.
+    
+    A new odd header was included. riemann/_config.h this is the
+    autoconf generated header. I need it because contains the
+    RIEMANN_WITH_LOCK macro defined my configure. Another option is create
+    a riemann/client.h.in, but I'm lazy.
+    
+    Since I have to drop RIEMANN_CLIENT_INIT this is API version 2 with no
+    backward compatibility.
+
+clean.sh
+configure.ac
+m4/.gitignore
+m4/ax_prefix_config_h.m4
+src/Makefile.am
+src/client.c
+src/examples/exmp01.c
+src/examples/exmp02.c
+src/examples/exmp03.c
+src/riemann/client.h
+src/riemann/tcp.h
+src/riemann/udp.h
+src/tcp.c
+src/udp.c
+
+commit 5299215
+Author: gkos <danielhilst@gmail.com>
+Date:   2013-01-08
+
+    README.md updates
+
+README.md
+
+commit 13f15d5
+Author: gkos <danielhilst@gmail.com>
+Date:   2013-01-08
+
+    Build process improvements and fixes. Header fixes.
+
+configure.ac
+src/Makefile.am
+src/client.c
+src/event.c
+src/examples/Makefile.am
+src/examples/exmp01.c
+src/examples/exmp02.c
+src/examples/exmp03.c
+src/riemann/client.h
+src/riemann/event.h
+src/riemann/message.h
+src/riemann/query.h
+
+commit 93e675c
+Author: gkos <danielhilst@gmail.com>
+Date:   2013-01-05
+
+    README.md update
+
+README.md
+
+commit dbdd393
+Author: gkos <danielhilst@gmail.com>
+Date:   2013-01-05
+
+    --with-protobuf-c-dir= option added to configure
+
+README.md
+clean.sh
+configure.ac
+src/Makefile.am
+src/examples/Makefile.am
+
+commit 2df752d
+Author: gkos <danielhilst@gmail.com>
+Date:   2013-01-05
+
+    empty m4 directory added, as dep for build.sh
+
+m4/.gitignore
+
+commit eaa4dbe
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2013-01-04
+
+    TODO list updated
+
+README.md
+
+commit a91ef13
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2013-01-03
+
+    README.md fixes
+
+README.md
+
+commit 925a200
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2013-01-03
+
+    README.md fixes
+
+README.md
+
+commit bd57de3
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2013-01-03
+
+    Switch to htonl and ntohl functions.
+    Fixes on configure.ac and Makefiles
+    README.md update
+    Tarball added
+
+README.md
+configure.ac
+src/Makefile.am
+src/client.c
+src/message.c
+
+commit e1fa299
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2013-01-03
+
+    Minor fixes on build process
+
+clean.sh
+src/Makefile.am
+
+commit 7bb57c9
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2013-01-03
+
+    Versioning started, Makefile fixes and TODO list updated
+
+Makefile.am
+README.md
+configure.ac
+src/Makefile.am
+
+commit fe20e30
+Merge: 5218e43 cfeaf29
+Author: gkos <danielhilst@gmail.com>
+Date:   2013-01-02
+
+    Merge pull request #1 from lwf/master
+    
+    Typo in Makefile.am
+
+commit cfeaf29
+Author: Torbjörn Norinder <torbjorn@genunix.se>
+Date:   2013-01-01
+
+    Fix typo in Makefile.am
+
+src/Makefile.am
+
+commit 5218e43
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    UDP send implemented
+
+README.md
+configure.ac
+src/client.c
+src/examples/Makefile.am
+src/examples/exmp03.c
+src/message.c
+src/riemann/client.h
+src/riemann/message.h
+src/riemann/udp.h
+src/udp.c
+
+commit c9b00db
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    README.md fix
+
+README.md
+
+commit d68cac7
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    Check for protoc-c on configure.ac. @TODO list update
+
+README.md
+configure.ac
+
+commit 0483de5
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    README.md update
+
+README.md
+
+commit e44c5a4
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    README.md @TODO update
+
+README.md
+
+commit b70e82e
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    Ported to autotool
+
+src/Makefile.am
+src/examples/Makefile.am
+
+commit 63bb3ef
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    build and clean scripts created
+
+build.sh
+clean.sh
+
+commit 4a9c58a
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    Files added
+
+AUTHORS
+COPYING
+ChangeLog
+INSTALL
+Makefile.am
+NEWS
+README
+configure.ac
+src/Makefile.am
+src/examples/Makefile.am
+
+commit 4f9b60c
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-29
+
+    First try
+
+Makefile
+src/Makefile
+src/examples/Makefile
+
+commit a38a630
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-28
+
+    proto.pb-c.* files moved to src/riemann
+
+Makefile
+src/Makefile
+src/riemann/event.h
+src/riemann/message.h
+src/riemann/query.h
+
+commit f0dee11
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-28
+
+    Example of error handling on connect
+
+src/client.c
+src/examples/exmp01.c
+
+commit 217912e
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-28
+
+    New organization of files
+
+.gitignore
+Makefile
+README.md
+common.c
+common.h
+examples/Makefile
+examples/query_events.c
+examples/send_events.c
+proto.proto
+query.c
+query.h
+riemann_client.c
+riemann_client.h
+src/Makefile
+src/client.c
+src/common.c
+src/event.c
+src/examples/Makefile
+src/examples/exmp01.c
+src/examples/exmp02.c
+src/message.c
+src/proto.proto
+src/query.c
+src/riemann/client.h
+src/riemann/common.h
+src/riemann/event.h
+src/riemann/message.h
+src/riemann/query.h
+src/riemann/tcp.h
+src/riemann/udp.h
+src/tcp.c
+src/udp.c
+tcp.c
+tcp.h
+
+commit cc3d3a9
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-28
+
+    Tcp and Query code implemented
+
+.gitignore
+Makefile
+README.md
+example.c
+examples/Makefile
+examples/query_events.c
+examples/send_events.c
+query.c
+query.h
+riemann_client.c
+riemann_client.h
+tcp.c
+tcp.h
+
+commit 4451a8a
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-27
+
+    TCP first implementations, UDP droped
+
+Makefile
+example.c
+riemann_client.c
+riemann_client.h
+udp.c
+udp.h
+
+commit f43b510
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-27
+
+    Some fixes
+
+Makefile
+example.c
+riemann_client.h
+
+commit b8fa63a
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-27
+
+    README update
+
+README.md
+example.c
+
+commit 9e8e32b
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-27
+
+    Bug fix, event attributes are freed now
+    example.c accepts arguments HOST and PORT
+
+example.c
+riemann_client.c
+
+commit a5903ce
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-26
+
+    riemann_events_init fix
+
+riemann_client.c
+
+commit 7514913
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-25
+
+    Yet another README.mk fix, >:(
+
+README.md
+
+commit 7772d1e
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-25
+
+    Another fixes to README.mk
+
+README.md
+
+commit 7fdf5fe
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-25
+
+    README.mk fixed
+
+README.md
+
+commit 8d183d8
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-25
+
+    UDP client implemented
+    example.c updated with udp usage
+    README.mk improved
+
+Makefile
+README.md
+common.h
+example.c
+riemann_client.c
+riemann_client.h
+udp.c
+udp.h
+
+commit b0673f5
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-24
+
+    Makefile modified to create a .so file
+
+Makefile
+README.md
+riemann_client.c
+
+commit 50b85e8
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-24
+
+    Almost all fields shown on example.c
+
+example.c
+
+commit 68b1cfc
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-24
+
+    Remaining riemann_event_set functions implemented
+
+example.c
+riemann_client.c
+
+commit 916c765
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-24
+
+    malloc() fails forwarded to caller
+    riemann_events_free added
+    main.c moved to example.c
+    Makefile fix
+
+Makefile
+common.c
+common.h
+example.c
+main.c
+riemann_client.c
+riemann_client.h
+
+commit f473519
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-24
+
+    Todo list changed
+
+README.md
+
+commit a55ff84
+Author: Daniel Hilst <danielhilst@gmail.com>
+Date:   2012-12-24
+
+    First commit
+
+Makefile
+common.c
+common.h
+main.c
+proto.proto
+riemann_client.c
+riemann_client.h
+
+commit e7e1400
+Author: gkos <danielhilst@gmail.com>
+Date:   2012-12-24
+
+    Initial commit
+
+.gitignore
+README.md

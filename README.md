@@ -8,6 +8,7 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-1.0.0.tar.g
 ## Features
 - TCP and UDP support for sending events
 - TCP support for quering
+- Implicit locking system 
 
 ## Dependencies
 - Protobuf-c http://code.google.com/p/protobuf-c/
@@ -16,16 +17,11 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-1.0.0.tar.g
 - Improve TCP code
     - Implement timeout (select)
 - Improve error signaling, return kind of errno
-- Improve UDP code
-    - Does riemann responds UDP?
 - Autotools
   	- Implement an alternative to getaddrinfo(), (gethostbyname!?)	
-    at compile time, using config.h
-    - Start using config.h
+    at compile time.
     - Write INSTALL and README 
-    - Implement locking system configurable at compile time.         	  (./configure --with-thread_safe)
 - Doxygen?
-- Git log ChangeLog's.
 - Test on this enviroments
     - AIX
     - Solaris
