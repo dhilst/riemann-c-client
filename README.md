@@ -3,7 +3,7 @@
 O client library to rieman writen in C
 
 ## Download 
-https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-1.0.0.tar.gz
+https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-2.0.0.tar.gz
 
 ## Features
 - TCP and UDP support for sending events
@@ -34,7 +34,7 @@ WARNING: This is in really early stages, and was not fully tested.
 
 1. Download and extract
 ```
-# wget 'https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-1.0.0.tar.gz' -O libriemann_client-1.0.0.tar.gz
+# wget 'https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-2.0.0.tar.gz' -O libriemann_client-1.0.0.tar.gz
 # tar xf libriemann_client-1.0.0.tar.gz
 ```
 
