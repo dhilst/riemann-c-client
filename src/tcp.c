@@ -4,18 +4,42 @@
 int riemann_tcp_recv(riemann_client_t *cli, uint8_t *buf, size_t len, int flags, struct timeval *tout, ssize_t *recv_bytes)
 {
         ssize_t bytes;
+#ifdef RIEMANN_WITH_TIMEOUT
+        fd_set fds;
+        int rc;
+#endif
 
         assert(cli);
         assert(buf);
         assert(len >= 0);
 
-#ifdef RIEMANN_WITH_LOCK
-        pthread_mutex_lock(&cli->mutex);
+#ifdef RIEMANN_WITH_TIMEOUT
+        FD_ZERO(&fds);
+        FD_SET(cli->sock, &fds);
+        rc = select(cli->sock + 1, &fds, NULL, NULL, tout);
+        if (rc == -1) {
+                return -2;
+        } else if (rc == 0) {
+                return -3;      /* Timeout */
+        }
+                
+        if (FD_ISSET(cli->sock, &fds)) {
 #endif
-        bytes = recv(cli->sock, buf, len, flags);
 #ifdef RIEMANN_WITH_LOCK
-        pthread_mutex_unlock(&cli->mutex);
+                pthread_mutex_lock(&cli->mutex);
 #endif
+
+                bytes = recv(cli->sock, buf, len, flags);
+
+#ifdef RIEMANN_WITH_LOCK
+                pthread_mutex_unlock(&cli->mutex);
+#endif
+#ifdef RIEMANN_WITH_TIMEOUT
+        } else { 
+                return -4;      /* Should not happen  */
+        }/* if (FD_ISSET(cli->sock, &fds)) { */
+#endif 
+
         if (bytes == -1) {
                 fprintf(stderr, "tcp.c riemann_tcp_client_recv(%d): Error while receiving data from server: %s\n", __LINE__, strerror(errno));
                 return -1;
@@ -29,11 +53,27 @@ int riemann_tcp_recv(riemann_client_t *cli, uint8_t *buf, size_t len, int flags,
 int riemann_tcp_send(riemann_client_t *cli, uint8_t *buf, size_t len, int flags, struct timeval *tout)
 {
         ssize_t bytes;
+#ifdef RIEMANN_WITH_TIMEOUT
+        fd_set fds;
+        int rc;
+#endif
 
         assert(cli);
         assert(buf);
         assert(len >= 0);
 
+#ifdef RIEMANN_WITH_TIMEOUT
+        FD_ZERO(&fds);
+        FD_SET(cli->sock, &fds);
+        rc = select(cli->sock + 1, NULL, &fds, NULL, tout);
+        if (rc == -1) {
+                return -2;
+        } else if (rc == 0) {
+                return -3;      /* Timeout */
+        }
+                
+        if (FD_ISSET(cli->sock, &fds)) {
+#endif
 #ifdef RIEMANN_WITH_LOCK
         pthread_mutex_lock(&cli->mutex);
 #endif
@@ -41,7 +81,11 @@ int riemann_tcp_send(riemann_client_t *cli, uint8_t *buf, size_t len, int flags,
 #ifdef RIEMANN_WITH_LOCK
         pthread_mutex_unlock(&cli->mutex);
 #endif
-      
+#ifdef RIEMANN_WITH_TIMEOUT
+        } else { 
+                return -4;      /* Should not happen  */
+        }/* if (FD_ISSET(cli->sock, &fds)) { */
+#endif       
         if (bytes == -1) {
                 return -1;
         }

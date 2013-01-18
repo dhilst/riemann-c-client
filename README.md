@@ -14,8 +14,6 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-2.0.0.tar.g
 - Protobuf-c http://code.google.com/p/protobuf-c/
 
 ## @TODO
-- Improve TCP code
-    - Implement timeout (select)
 - Improve error signaling, return kind of errno
 - Autotools
   	- Implement an alternative to getaddrinfo(), (gethostbyname!?)	
@@ -27,6 +25,7 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-2.0.0.tar.g
     - Solaris
     - FreeBSD
     - CygWin
+
 
 ## Install
 

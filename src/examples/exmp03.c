@@ -51,17 +51,18 @@ int main(int argc, char **argv)
 
         riemann_message_set_events(&msg, events, n_events);
         
+        error = riemann_client_init(&cli);
+        if (error) {
+                fprintf(stderr, "Can't initialize client: strerror(%s)\n", strerror(errno));
+                exit(EXIT_FAILURE);
+        }
+
         error = riemann_client_connect(&cli, UDP, argv[1], atoi(argv[2]));
         if (error) {
                 fprintf(stderr, "Can't connectd: strerror(%s) gai_strerrror(%s)\n", strerror(errno), gai_strerror(error));
                 exit(EXIT_FAILURE);
         }
 
-        error = riemann_client_init(&cli);
-        if (error) {
-                fprintf(stderr, "Can't initialize client: strerror(%s)\n", strerror(errno));
-                exit(EXIT_FAILURE);
-        }
 
         error = riemann_client_send_message(&cli, &msg, 0, NULL);
         if (error) {
@@ -72,6 +73,7 @@ int main(int argc, char **argv)
         riemann_events_free(events, n_events);
         riemann_client_free(&cli);
 
+        puts("Sucess!");
         return 0;
 }
 

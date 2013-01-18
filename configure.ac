@@ -3,7 +3,7 @@
 
 # Autoconf init
 AC_PREREQ([2.68])
-AC_INIT([libriemann_client], [2.0.0], [danielhilst@gmail.com])
+AC_INIT([libriemann_client], [3.0.0], [danielhilst@gmail.com])
 
 # Automake init
 AM_INIT_AUTOMAKE 
@@ -53,6 +53,24 @@ AC_ARG_WITH(protobuf-c-dir, AC_HELP_STRING([--with-protobuf-c-dir], [Path to pro
         ])
 ) || exit 1
 
+AC_ARG_ENABLE(timeout, AC_HELP_STRING([--enable-timeout], [Enable timeout system]), 
+[
+        WITH_TIMEOUT=no
+        if test "x$enableval" !=  "xno"; then
+                WITH_TIMEOUT=yes
+                AC_CHECK_HEADERS([sys/types.h sys/socket.h], [],
+                [
+                	AC_MSG_ERROR([sys/types.h or sys/socket.h  not found])
+                ])
+        fi
+],
+[
+        WITH_TIMEOUT=yes
+])
+if test "x$WITH_TIMEOUT" = "xyes"; then
+        AC_DEFINE([WITH_TIMEOUT], [1], [Use timeout system])
+fi
+
 # Checks for header files.
 ( # New shell to mask CFLAGS and LDFLAGS
         CFLAGS="$PROTOBUF_C_CFLAGS $CFLAGS"
@@ -61,6 +79,8 @@ AC_ARG_WITH(protobuf-c-dir, AC_HELP_STRING([--with-protobuf-c-dir], [Path to pro
                 AC_MSG_ERROR([google/protobuf-c/protobuf-c.h not found, use --with-protobuf-c-dir= for non-standard directories])
         ])
 ) || exit 1 
+
+
 
 
 
