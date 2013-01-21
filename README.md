@@ -2,13 +2,16 @@
 
 O client library to rieman writen in C
 
-## Download 
-https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-2.0.0.tar.gz
-
 ## Features
 - TCP and UDP support for sending events
 - TCP support for quering
-- Implicit locking system 
+- Timeout support, enabling blocking and non-blocking calls on same
+  function. (Can be disabled at compile time
+  --disable-timeout. Enabled by default.)
+- Implicit locking system (Can be enabled at compile time
+  --enable-lock. Disabled by default.)
+- Support for tags and attributes
+- Support for sending multiple events in one shot
 
 ## Dependencies
 - Protobuf-c http://code.google.com/p/protobuf-c/
@@ -31,15 +34,15 @@ https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-2.0.0.tar.g
 
 WARNING: This is in really early stages, and was not fully tested.
 
-1. Download and extract
+1. Clone
 ```
-# wget 'https://sites.google.com/site/gkoshwdir/home/files/libriemann_client-2.0.0.tar.gz' -O libriemann_client-1.0.0.tar.gz
-# tar xf libriemann_client-1.0.0.tar.gz
+# git clone 'https://github.com/gkos/riemann-c-client.git'
+# cd riemann-c-client
 ```
 
 2. Build
 ```
-# cd libriemann_client-1.0.0
+# ./build.sh
 # ./configure --with-protobuf-c-dir=/root/usr/protobuf-c
 # make
 ```
