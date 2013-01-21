@@ -135,10 +135,10 @@ void riemann_event_set_metric_d(riemann_event_t *evtp, double metric)
 int riemann_event_set_attributes(riemann_event_t *evtp, const riemann_attribute_pairs_t *apairsp, size_t n_attrs)
 {
         int i;
-        riemann_attribute_t **attrs = malloc(sizeof(riemann_attribute_t));
-        assert(attrs);
-        
+        riemann_attribute_t **attrs = malloc(sizeof(riemann_attribute_t) * n_attrs);
 
+        if (!attrs)
+                return -2;
 
         for (i = 0; i < n_attrs; i++) {
                 attrs[i] = riemann_attribute_alloc();

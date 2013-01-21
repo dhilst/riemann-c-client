@@ -86,6 +86,11 @@ int main(int argc, char **argv)
                 puts("Sucess");
         }
 
+        for (i = 0; i < n_events; i++) /* freeing events fields */
+                riemann_event_free(events[i]); /* Since events are on
+                                                * stack the may not be
+                                                * freed. */
+
         riemann_message_free(resp); /* responses should be freed */
         riemann_client_free(&cli);
 

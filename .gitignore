@@ -10,12 +10,37 @@
 *.so
 *.so.*
 *.dylib
+*.la
+*.lo
 
 # Executables
 *.exe
 *.out
 *.app
 
+*.deps
+*.libs
 proto.pb-c.*
 cscope.*
 *~
+*Makefile
+*.in
+_configs.sed
+aclocal.m4
+autom4te.cache/
+config.guess
+config.h
+config.log
+config.status
+config.sub
+configure
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
+src/examples/exmp01
+src/examples/exmp02
+src/examples/exmp03
+src/riemann/_config.h
+stamp-h1
