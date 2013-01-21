@@ -88,8 +88,10 @@ riemann_message_set_events(&msg, events, 1);
 ```
 
 Send the message! 3th parameter is flags to be passed to send() call,
-4th parameter is a timeout struct(struct timeval), but this is not
-implemented yet, so just passes NULL.
+4th parameter is a timeout struct(struct timeval). Passing 0 on both
+fields yield a non-blocking call, otherwise the call waits until
+timeout. If NULL is passed the call blocks undefinately.
+
 ```C
 error = riemann_client_init(&cli);
 error = riemann_client_connect(&cli, 
