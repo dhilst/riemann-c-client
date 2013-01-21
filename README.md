@@ -113,7 +113,7 @@ riemann_client_free(&cli);
 
 When compiling your code, link it against libriemann_client
 ```
-# cc -o your_program your_code.c -lriemann_client -L/usr/local/lib -I/usr/local/include
+# cc -o your_program your_code.c -lriemann_c_client -L/usr/local/lib -I/usr/local/include
 ```
 
 
