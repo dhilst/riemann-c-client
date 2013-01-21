@@ -8,7 +8,7 @@
 
 #include "riemann/tcp.h"
 #include "riemann/udp.h"
-#include "riemann/client.h"
+#include <riemann/client.h>
 
 
 int riemann_client_init(riemann_client_t *cli)

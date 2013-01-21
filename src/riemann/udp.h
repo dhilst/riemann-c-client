@@ -7,6 +7,6 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#include "riemann/client.h"
+#include <riemann/client.h>
 
 #endif

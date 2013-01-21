@@ -3,7 +3,7 @@
 
 # Autoconf init
 AC_PREREQ([2.68])
-AC_INIT([libriemann_client], [3.0.0], [danielhilst@gmail.com])
+AC_INIT([riemann-c-client], [0.1], [danielhilst@gmail.com])
 
 # Automake init
 AM_INIT_AUTOMAKE 
@@ -79,10 +79,6 @@ fi
                 AC_MSG_ERROR([google/protobuf-c/protobuf-c.h not found, use --with-protobuf-c-dir= for non-standard directories])
         ])
 ) || exit 1 
-
-
-
-
 
 AC_CHECK_HEADERS([assert.h arpa/inet.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
 

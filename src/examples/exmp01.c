@@ -6,6 +6,7 @@
 #include <riemann/event.h>
 #include <riemann/message.h>
 #include <riemann/client.h>
+#include <riemann/attribute.h>
 
 static char *cpus[] = {
         "cpu-0",
@@ -18,6 +19,12 @@ static const char *tags[] = {
         "cpu",
         "idle",
         "performance",
+
+};
+
+static const riemann_attribute_pairs_t attrs[] = {
+        { "key0", "value0" },
+        { "key1", "value1" },
 };
 
 #define STATIC_ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
@@ -28,6 +35,7 @@ int main(int argc, char **argv)
         riemann_message_t *resp = NULL;
         size_t n_events = STATIC_ARRAY_SIZE(cpus);
         riemann_event_t *events[n_events]; /* using stack space */
+        size_t n_attrs = STATIC_ARRAY_SIZE(attrs);
 
         int i;
         int error;
@@ -46,10 +54,10 @@ int main(int argc, char **argv)
                 riemann_event_set_metric_f(events[i], 100); /* 100% idle */
                 riemann_event_set_state(events[i], "ok");
                 riemann_event_set_tags(events[i], tags, STATIC_ARRAY_SIZE(tags));
+                riemann_event_set_attributes(events[i], attrs, STATIC_ARRAY_SIZE(attrs));
         }
 
         riemann_message_set_events(&msg, events, n_events);
-        
         error = riemann_client_init(&cli);
         if (error) {
                 fprintf(stderr, "Can't initialize client: strerror(%s)\n", strerror(errno));

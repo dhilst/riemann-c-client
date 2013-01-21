@@ -1,6 +1,8 @@
 #include <stdlib.h>
 
-#include "riemann/event.h"
+#include <riemann/_config.h>
+#include <riemann/attribute.h>
+#include <riemann/event.h>
 
 void riemann_event_init(riemann_event_t *evt)
 {
@@ -44,6 +46,14 @@ void riemann_event_free(riemann_event_t *e)
                 free(e->tags);
                 e->tags = NULL;
                 e->n_tags = 0;
+        }
+
+        if (e->n_attributes > 0) {
+                int i = 0;
+                for (i = 0; i < e->n_attributes; i++) 
+                        free(e->attributes[i]);
+                e->attributes = NULL;
+                e->n_attributes = 0;
         }
 }
 
@@ -120,4 +130,30 @@ void riemann_event_set_metric_d(riemann_event_t *evtp, double metric)
 {
         evtp->metric_d = metric;
         evtp->has_metric_d = 1;
+}
+
+int riemann_event_set_attributes(riemann_event_t *evtp, const riemann_attribute_pairs_t *apairsp, size_t n_attrs)
+{
+        int i;
+        riemann_attribute_t **attrs = malloc(sizeof(riemann_attribute_t));
+        assert(attrs);
+        
+
+
+        for (i = 0; i < n_attrs; i++) {
+                attrs[i] = riemann_attribute_alloc();
+                if (!attrs[i]) {
+                        int j;
+                        for (j = 0; j < i; j++)
+                                riemann_attribute_free(attrs[i]); 
+                        return -1;
+                }
+                
+                riemann_attribute_init(attrs[i]);
+                riemann_attribute_set_key(attrs[i], apairsp[i].key);
+                riemann_attribute_set_value(attrs[i], apairsp[i].value);
+        }
+        evtp->attributes = attrs;
+        evtp->n_attributes = n_attrs;
+        return 0;
 }

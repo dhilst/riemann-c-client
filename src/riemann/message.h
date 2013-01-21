@@ -1,11 +1,14 @@
 #ifndef RIEMANN_MESSAGE_H
 # define RIEMANN_MESSAGE_H
 
-#include <string.h>
-
+#include <riemann/_config.h>
 #include <riemann/query.h>
 #include <riemann/event.h>
 #include <riemann/proto.pb-c.h>
+
+#ifdef RIEMANN_HAVE_STRING_H
+# include <string.h>
+#endif 
 
 typedef Msg riemann_message_t;
 
