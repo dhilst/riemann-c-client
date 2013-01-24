@@ -1,8 +1,13 @@
 #include <stdlib.h>
 
+#if RIEMANN_HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
+
 #include <riemann/_config.h>
 #include <riemann/attribute.h>
 #include <riemann/event.h>
+
 
 void riemann_event_init(riemann_event_t *evt)
 {
@@ -108,8 +113,15 @@ int riemann_event_set_tags(riemann_event_t *evtp, const char **tags, size_t n_ta
         if (!evtp->tags)
                 return -1;
 
-        for (i = 0; i < n_tags; i++) 
+        for (i = 0; i < n_tags; i++) { 
                 evtp->tags[i] = strdup(tags[i]);
+                if (!evtp->tags[i]) { /* free the already allocated */
+                        int j;
+                        for (j = 0; j < i; j++)
+                                free(evtp->tags[j]);
+                        return -2;
+                }
+        }
         evtp->n_tags = n_tags;
         return 0;
 }
@@ -156,4 +168,141 @@ int riemann_event_set_attributes(riemann_event_t *evtp, const riemann_attribute_
         evtp->attributes = attrs;
         evtp->n_attributes = n_attrs;
         return 0;
+}
+
+int riemann_event_strfevent(char *s, size_t max, const char *fmt, riemann_event_t *evtp)
+{
+        int offset;
+        int bytes;
+
+        assert(s);
+        assert(max > 0);
+        assert(fmt);
+        assert(evtp);
+
+        for (offset = 0; offset < max && *fmt; offset++, fmt++) {
+                if (*fmt == '%') {
+                        int i;
+                        switch (*++fmt) {
+                        case 'T':
+                                if (!evtp->has_time)
+                                        break;
+
+                                bytes = snprintf(s + offset, max - offset, "%" PRId64, evtp->time);
+                                if (bytes < 0)
+                                        return -1;
+
+                                offset += bytes - 1;
+                                break;
+                        case 'S':
+                                bytes = snprintf(s + offset, max - offset, "%s", evtp->state);
+                                if (bytes < 0)
+                                        return -1;
+
+                                offset += bytes - 1;
+                                break;
+                        case 's':
+                                bytes = snprintf(s + offset, max - offset, "%s", evtp->service);
+                                if (bytes < 0)
+                                        return -1;
+
+                                offset += bytes - 1;
+                                break;
+                        case 'h':
+                                bytes = snprintf(s + offset, max - offset, "%s", evtp->host);
+                                if (bytes < 0)
+                                        return -1;
+
+                                offset += bytes - 1; 
+                                break;
+                        case 'd':
+                                bytes = snprintf(s + offset, max - offset, "%s", evtp->description);
+                                if (bytes < 0)
+                                        return -1;
+
+                                offset += bytes - 1;
+                                break;
+                        case 'G': /* tags */
+                                for (i = 0; i < evtp->n_tags; i++) {
+                                        bytes = snprintf(s + offset, max - offset, "%s,", evtp->tags[i]);
+                                        if (bytes < 0)
+                                                return -1;
+
+                                        offset += bytes;
+                                }
+                                offset -= 2; /* remove trailing `,' */
+                                break;
+                        case 't':
+                                if (!evtp->has_ttl)
+                                        break;
+
+                                bytes = snprintf(s + offset, max - offset, "%f", evtp->ttl);
+                                if (bytes < 0)
+                                        return -1;
+
+                                offset += bytes - 1;
+                                break;
+                        case 'a':
+                                for (i = 0; i < evtp->n_attributes; i++) {
+                                        bytes = snprintf(s + offset, max - offset, "%s=%s,", 
+                                                         evtp->attributes[i]->key,
+                                                         evtp->attributes[i]->value);
+                                        if (bytes < 0)
+                                                return -1;
+
+                                        offset += bytes;
+                                }
+                                offset -= 2; /*  remove trailing `,' */
+                                break;
+                        case 'm':
+                                switch (*++fmt) {
+                                case 'i':
+                                        if (!evtp->has_metric_d)
+                                                break;
+
+                                        bytes = snprintf(s + offset, max - offset, "%" PRId64, evtp->metric_sint64);
+                                        if (bytes < 0)
+                                                return -1;
+
+                                        offset += bytes - 1;
+                                        break;
+                                case 'd':
+                                        if (!evtp->has_metric_d)
+                                                break;
+
+                                        bytes = snprintf(s + offset, max - offset, "%f", evtp->metric_d);
+                                        if (bytes < 0)
+                                                return -1;
+
+                                        offset += bytes - 1;
+                                        break;
+                                case 'f':
+                                        if (!evtp->has_metric_f)
+                                                break;
+
+                                        bytes = snprintf(s + offset, max - offset, "%f", evtp->metric_f);
+                                        if (bytes < 0)
+                                                return -1;
+
+                                        offset += bytes - 1;
+                                        break;
+                                default:
+                                        break;
+                                }
+                                break;
+                        default:
+                                break;
+                        }
+                } else {
+                        s[offset] = *fmt;
+                }
+        }
+
+        if (offset >= max)  {
+                s[max - 1] = '\0';
+                return offset;  /* S is not lenghty enough */
+        }
+
+        s[offset] = '\0';
+        return 0;               /* sucess */
 }

@@ -25,4 +25,5 @@ void  riemann_event_set_ttl(riemann_event_t *evtp, float ttl);
 void riemann_event_set_metric_sint64(riemann_event_t *evtp, int64_t metric);
 void riemann_event_set_metric_d(riemann_event_t *evtp, double metric);
 int riemann_event_set_attributes(riemann_event_t *evtp, const riemann_attribute_pairs_t *apairsp, size_t n_attrs);
+int riemann_event_strfevent(char *s, size_t max, const char *fmt, riemann_event_t *evtp);
 #endif 

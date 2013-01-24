@@ -9,6 +9,8 @@
 
 #define STATIC_ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
+static char buffer[BUFSIZ];
+
 int main(int argc, char **argv)
 {
         riemann_message_t msg = RIEMANN_MSG_INIT;
@@ -16,9 +18,10 @@ int main(int argc, char **argv)
         riemann_query_t qry = RIEMANN_QUERY_INIT;
         riemann_client_t cli;
         int i;
+        int error;
 
-        if (argc != 3) {
-                fprintf(stderr, "%s <IP> <PORT>\n", argv[0]);
+        if (argc != 4) {
+                fprintf(stderr, "%s <IP> <PORT> <FMT>\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
 
@@ -37,8 +40,14 @@ int main(int argc, char **argv)
                 puts("Sucess");
         }
 
-        for (i = 0; i < resp->n_events; i++) 
-                puts(resp->events[i]->service);
+        for (i = 0; i < resp->n_events; i++) {
+                error = riemann_event_strfevent(buffer, BUFSIZ, argv[3], resp->events[i]);
+                if (error) {
+                        fprintf(stderr, "riemann_event_strfevent() error\n");
+                        exit(EXIT_FAILURE);
+                }
+                puts(buffer);
+        }
 
         riemann_message_free(resp); /* responses should be freed */
         riemann_client_free(&cli);        
