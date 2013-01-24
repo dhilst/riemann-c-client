@@ -257,7 +257,7 @@ int riemann_event_strfevent(char *s, size_t max, const char *fmt, riemann_event_
                         case 'm':
                                 switch (*++fmt) {
                                 case 'i':
-                                        if (!evtp->has_metric_d)
+                                        if (!evtp->has_metric_sint64)
                                                 break;
 
                                         bytes = snprintf(s + offset, max - offset, "%" PRId64, evtp->metric_sint64);
