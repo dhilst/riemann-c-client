@@ -1,8 +1,11 @@
 # riemann-c-client-lib
 
-O client library to rieman writen in C
+Native C client and library for [Riemann]
+
+[Riemann]: http://riemann.io
 
 ## Features
+
 - TCP and UDP support for sending events
 - TCP support for quering
 - Timeout support, enabling blocking and non-blocking calls on same
@@ -14,9 +17,21 @@ O client library to rieman writen in C
 - Support for sending multiple events in one shot
 
 ## Dependencies
-- Protobuf-c http://code.google.com/p/protobuf-c/
+
+- Google [protobuf-c] library
+- libtoolize
+
+On OS X, this can be installed with:
+
+    brew protobuf-c libtool
+
+Use `--with-protobuf-c-dir=/usr/local/Cellar/protobuf-c/0.15`
+as arguments to `./configure` below.
+
+[protobuf-c]: http://code.google.com/p/protobuf-c/
 
 ## @TODO
+
 - Improve error signaling, return kind of errno
 - Autotools
   	- Implement an alternative to getaddrinfo(), (gethostbyname!?)	
@@ -29,18 +44,19 @@ O client library to rieman writen in C
     - FreeBSD
     - CygWin
 
-
 ## Install
 
 WARNING: This is in really early stages, and was not fully tested.
 
 1. Clone
+
 ```
 # git clone 'https://github.com/gkos/riemann-c-client.git'
 # cd riemann-c-client
 ```
 
 2. Build
+
 ```
 # ./build.sh
 # ./configure --with-protobuf-c-dir=/root/usr/protobuf-c
@@ -48,12 +64,14 @@ WARNING: This is in really early stages, and was not fully tested.
 ```
 
 3. Install
+
 ```
 # sudo make install
 ```
 
 ## Usage
-Include you the headers
+
+Include the headers
 ```C
 #include <riemann/event.h>
 #include <riemann/message.h>
@@ -63,6 +81,7 @@ Include you the headers
 Create messages. Queries and Events are send attached in messages.
 Also create a client, this will be your connection to riemann
 server. riemann_client_connect() returns non-zero on failure.
+
 ```C
 int error;
 riemann_message_t msg = RIEMANN_MSG_INIT;
@@ -72,6 +91,7 @@ riemann_client_t cli;
 If you'll send events create the events and alloc them. There no
 simpler way to send a sigle event. Check the returned pointers. NULL
 means that malloc failed. Then set the event fields.
+
 ```C
 riemann_event_t **events;
 events = riemann_event_alloc_events(1);
@@ -82,7 +102,8 @@ riemann_event_set_metric_f(events[0], 1);
 riemann_event_set_state(events[0], "ok");
 ```
 
-Attach events to message
+Attach events to message:
+
 ```C
 riemann_message_set_events(&msg, events, 1);
 ```
@@ -101,7 +122,8 @@ error = riemann_client_send_message(&cli, &msg, 0, NULL);
 ```
 
 If you want to make sure that server received your events, ask it for
-a response.
+a response:
+
 ```C
 riemann_message_t *resp = NULL;
 resp = riemann_client_recv_message(&cli, 0, NULL);
@@ -110,13 +132,15 @@ if (resp->ok)
 ```
 
 Responses need to be freed. Also events and clients.
+
 ```C
 riemann_message_free(resp);
 riemann_events_free(events, n_events);
 riemann_client_free(&cli);
 ```
 
-When compiling your code, link it against libriemann_client
+When compiling your code, link it against libriemann_client:
+
 ```
 # cc -o your_program your_code.c -lriemann_c_client -L/usr/local/lib -I/usr/local/include
 ```
