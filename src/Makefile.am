@@ -1,4 +1,4 @@
-SUBDIRS = . examples
+SUBDIRS = . examples tools
 
 AM_CFLAGS= -Wall -Werror
 

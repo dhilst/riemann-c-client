@@ -80,7 +80,7 @@ fi
         ])
 ) || exit 1 
 
-AC_CHECK_HEADERS([assert.h arpa/inet.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
+AC_CHECK_HEADERS([assert.h arpa/inet.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h getopt.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_INT64_T
@@ -97,8 +97,9 @@ AC_CHECK_FUNCS([memset socket strdup strerror getaddrinfo])
 
 
 AC_CONFIG_FILES([Makefile 
-                 src/Makefile 
-                 src/examples/Makefile])
+                src/Makefile 
+                src/tools/Makefile
+                src/examples/Makefile])
 
 AC_OUTPUT
 
