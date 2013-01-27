@@ -23,6 +23,7 @@ O client library to rieman writen in C
     at compile time.
     - Write INSTALL and README 
 - Doxygen?
+- Create a wiki for better documentin
 - Test on this enviroments
     - AIX
     - Solaris
@@ -94,7 +95,7 @@ timeout. If NULL is passed the call blocks undefinately.
 
 ```C
 error = riemann_client_init(&cli);
-error = riemann_client_connect(&cli, 
+error = riemann_client_connect(&cli, RIEMANN_TCP,
                                "riemann.batmansion.org, 
                                5555);
 error = riemann_client_send_message(&cli, &msg, 0, NULL);
