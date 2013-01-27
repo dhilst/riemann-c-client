@@ -161,6 +161,7 @@ int riemannc_send(int argc, char **argv)
 
                                 attrs = strtoknize(optarg, strlen(optarg) + 1, ",", 1, &n_attrs);
                                 pairs = malloc(sizeof (riemann_attribute_pairs_t) * n_attrs);
+                                assert(pairs);
                                 /**
                                  * OMG, this is so ugly
                                  */
