@@ -146,7 +146,7 @@ int riemannc_send(int argc, char **argv)
                         riemann_event_set_description(evts[0], optarg);
                         break;
                 case OPT_TAGS:
-                        tags = strtoknize(optarg, strlen(optarg), ",", 1, &n_tags);
+                        tags = strtoknize(optarg, strlen(optarg) + 1, ",", 1, &n_tags);
                         assert(tags);
                         riemann_event_set_tags(evts[0], (const char **)tags, n_tags);
                         break;
