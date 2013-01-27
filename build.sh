@@ -2,7 +2,7 @@
 
 
 # OSX uses glibtoolize for gnu libtool 
-if which glibtoolize; then
+if which glibtoolize 2>&1> /dev/null; then
     alias libtoolize=glibtoolize
 fi
 
