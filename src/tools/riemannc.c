@@ -62,7 +62,7 @@ static struct option query_opts[] = {
 static char *server = "localhost";
 static int port = 5555;
 static int cli_type = TCP;
-static char *format = "%h/%s=%mf (%S)";
+static char *format = "%T,%h,%s,%d,%S,%mf,%md,%mi,%t,%G,%a";
 static char *query = "true";
 
 int riemannc_send(int argc, char **argv);
