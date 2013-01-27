@@ -50,9 +50,9 @@ int riemann_client_connect(riemann_client_t *cli, int type, char *hostname, int 
         memset(&saddr, '\0', sizeof(saddr));
         saddr.ai_family = AF_INET;
 
-        if (type == TCP) {
+        if (type == RIEMANN_TCP) {
                 saddr.ai_socktype = SOCK_STREAM;
-        } else if (type == UDP) {
+        } else if (type == RIEMANN_UDP) {
                 saddr.ai_socktype = SOCK_DGRAM;
         } else
                 return -1;
@@ -100,7 +100,7 @@ int riemann_client_send_message(riemann_client_t *cli, riemann_message_t *msg, i
         uint8_t *buf;
         int error;
 
-        if (cli->type == TCP) {
+        if (cli->type == RIEMANN_TCP) {
                 buf = riemann_message_to_tcp_buffer(msg, &len);
                 if (!buf)
                         return -1;
@@ -111,7 +111,7 @@ int riemann_client_send_message(riemann_client_t *cli, riemann_message_t *msg, i
 
                 return 0;
                 
-        } else if (cli->type == UDP) {
+        } else if (cli->type == RIEMANN_UDP) {
                 buf = riemann_message_to_buffer(msg, &len);
                 if (!buf)
                         return -3;
@@ -136,7 +136,7 @@ riemann_message_t *riemann_client_recv_message(riemann_client_t *cli, int flags,
         uint32_t header;
         int error;
 
-        if (cli->type == TCP) {
+        if (cli->type == RIEMANN_TCP) {
                 header = riemann_tcp_recv_header(cli, flags, tout);
                 if (header == -1)
                         return NULL;
@@ -154,7 +154,7 @@ riemann_message_t *riemann_client_recv_message(riemann_client_t *cli, int flags,
                         return NULL;
 
                 return msg;
-        } else if (cli->type == UDP) {
+        } else if (cli->type == RIEMANN_UDP) {
                 return NULL;      /* Not implemented */
         } else {
                 return NULL;

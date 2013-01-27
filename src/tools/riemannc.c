@@ -61,7 +61,7 @@ static struct option query_opts[] = {
 /* Default options */
 static char *server = "localhost";
 static int port = 5555;
-static int cli_type = TCP;
+static int cli_type = RIEMANN_TCP;
 static char *format = "%T,%h,%s,%d,%S,%mf,%md,%mi,%t,%G,%a";
 static char *query = "true";
 
@@ -125,10 +125,10 @@ int riemannc_send(int argc, char **argv)
                         port = atoi(optarg);
                         break;
                 case OPT_TCP:
-                        cli_type = TCP;
+                        cli_type = RIEMANN_TCP;
                         break;
                 case OPT_UDP:
-                        cli_type = UDP;
+                        cli_type = RIEMANN_UDP;
                         break;
                 case OPT_TIME:
                         riemann_event_set_time(evts[0], (int64_t) atoll(optarg));
@@ -262,7 +262,7 @@ int riemannc_query(int argc, char **argv)
         riemann_message_set_query(&msg, &qry);
         riemann_client_init(&cli);
 
-        error = riemann_client_connect(&cli, TCP, server, port);
+        error = riemann_client_connect(&cli, RIEMANN_TCP, server, port);
         if (error)
                 pexit("riemann_client_connect");
 

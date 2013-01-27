@@ -29,7 +29,7 @@ int main(int argc, char **argv)
         riemann_message_set_query(&msg, &qry);
 
         riemann_client_init(&cli);
-        riemann_client_connect(&cli, TCP, argv[1], atoi(argv[2]));
+        riemann_client_connect(&cli, RIEMANN_TCP, argv[1], atoi(argv[2]));
         riemann_client_send_message(&cli, &msg, 0, NULL);
         resp = riemann_client_recv_message(&cli, 0, NULL);
 

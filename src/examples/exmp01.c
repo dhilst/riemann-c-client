@@ -64,7 +64,7 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
         }
 
-        error = riemann_client_connect(&cli, TCP, argv[1], atoi(argv[2])); /* functions that returns ints returns 0 on success */
+        error = riemann_client_connect(&cli, RIEMANN_TCP, argv[1], atoi(argv[2])); /* functions that returns ints returns 0 on success */
         if (error) {
                 fprintf(stderr, "Can't connectd: strerror(%s) gai_strerrror(%s)\n", strerror(errno), gai_strerror(error));
                 exit(EXIT_FAILURE);

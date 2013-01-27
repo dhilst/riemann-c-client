@@ -17,9 +17,9 @@ struct riemann_client_s {
 
 typedef struct riemann_client_s riemann_client_t;
 
-enum c_types {
-        TCP,
-        UDP,
+enum riemann_client_types {
+        RIEMANN_TCP,
+        RIEMANN_UDP,
 };
 
 int riemann_client_init(riemann_client_t *cli);

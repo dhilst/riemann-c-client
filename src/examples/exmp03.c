@@ -57,7 +57,7 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
         }
 
-        error = riemann_client_connect(&cli, UDP, argv[1], atoi(argv[2]));
+        error = riemann_client_connect(&cli, RIEMANN_UDP, argv[1], atoi(argv[2]));
         if (error) {
                 fprintf(stderr, "Can't connectd: strerror(%s) gai_strerrror(%s)\n", strerror(errno), gai_strerror(error));
                 exit(EXIT_FAILURE);
