@@ -91,7 +91,46 @@ int main(int argc, char **argv)
 
 void riemannc_usage(void)
 {
-        puts("usage");          /*  do this  */
+        puts("riemannc <command> [options]\n\n"
+"where <command> is one of:\n"
+"        query, send\n\n"
+
+"Both modes support these options:\n"
+"    --server hostname   The Riemann server IP or hostname\n"
+"    --port port         The Riemann server port\n"
+"If not provided, these default to localhost:5555\n\n"
+
+"Send mode options to build up the Riemann event:\n"
+"    --host host                   Hostname for the event, not the Riemann server\n"
+"    --service service             Service name\n"
+"    --state state                 State option\n"
+"    --tags tag1,tag2              Array of tags, as comma-separated list\n"
+"    --attributes <key=val>[,...]  The attributes array, comma-separated\n"
+"    --ttl ttl                     The ttl field in seconds\n"
+"    --time time                   The time field in seconds since UNIX epoch\n"
+"    --metric_f metric             The metric_f field (float)\n"
+"    --metric_d metric             The metric_d field (double)\n"
+"    --metric_sint64               The metric_sint64 field (int64_t)\n\n"
+
+"Send mode will send only one event per call. This may change in future.\n\n"
+
+"Query mode options\n"
+"    --string query string   The query string. Ex 'host = \"foo\"'\n"
+"    --format format The format string for output. See the 37baef8 commit for format specification\n\n"
+
+"The parameters are detailed at http://riemann.io/concepts.html\n\n"
+
+"Examples:\n"
+"    riemannc send --host sendai --service chocolate --state someLeft --tags belgian,swiss --ttl 300\n"
+"    riemannc send --host sendai --service chocolate --state allGone\n"
+"    riemannc send --server 127.0.0.1 --host akai --service chocolate --state moreHere\n"
+"    riemannc query --string 'true'\n"
+"    riemannc query --string 'host=\"sendai\"'\n"
+"    riemannc query --string 'service=\"chocolate\"'\n\n"
+
+"RiemannC is a native C client and library for the awesome http://riemann.io/\n"
+"RiemannC is available from https://github.com/gkos/riemann-c-client\n\n\n"
+);
 }
 
 int riemannc_send(int argc, char **argv)
