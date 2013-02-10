@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 # Autoconf init
-AC_PREREQ([2.68])
+AC_PREREQ([2.67])
 AC_INIT([riemann-c-client], m4_esyscmd_s([git describe --abbrev=0]),[danielhilst@gmail.com])
 
 # Automake init
@@ -47,7 +47,7 @@ AC_ARG_WITH(protobuf-c-dir, AC_HELP_STRING([--with-protobuf-c-dir], [Path to pro
 
 ( # New shell to mask CFLAGS and LDFLAGS
         LDFLAGS="$PROTOBUF_C_LDFLAGS $LDFLAGS"
-        AC_CHECK_LIB(protobuf-c, protobuf_c_message_init, [], 
+        AC_CHECK_LIB(protobuf-c, protobuf_c_message_pack, [], 
         [
                 AC_MSG_ERROR([Can't link against protobuf-c lib, use --with-protobuf-c-dir= for non-standard directories])
         ])
@@ -102,4 +102,3 @@ AC_CONFIG_FILES([Makefile
                 src/examples/Makefile])
 
 AC_OUTPUT
-
