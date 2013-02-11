@@ -2,7 +2,7 @@
 layout: default
 title: riemann-c-client Debian building
 ---
-# Debian Install
+# Debian Squeeze Install
 
 ## Installing dependencies 
 
