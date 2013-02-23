@@ -93,6 +93,7 @@ AC_CHECK_TYPES([struct addrinfo], [], [], [[#include <netdb.h>]])
 
 # Checks for library functions.
 AC_FUNC_MALLOC
+AC_FUNC_ALLOCA
 AC_CHECK_FUNCS([memset socket strdup strerror getaddrinfo])
 
 

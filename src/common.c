@@ -1,5 +1,7 @@
 #include "riemann/common.h"
-#include <alloca.h>
+#ifdef RIEMANN_HAVE_ALLOCA_H
+# include <alloca.h>
+#endif
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
