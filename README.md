@@ -1,8 +1,11 @@
-# riemann-c-client-lib
+# riemann-c-client
 
 Native C client and library for [Riemann]
 
 [Riemann]: http://riemann.io
+ 
+Chekout the [wiki]!
+[wiki]: https://github.com/gkos/riemann-c-client/wiki
 
 ## Features
 
@@ -43,7 +46,7 @@ as arguments to `./configure` below.
     - AIX
     - Solaris
     - FreeBSD
-    - CygWin
+    - OpenBSD
 
 ## Install
 
@@ -69,6 +72,9 @@ WARNING: This is in really early stages, and was not fully tested.
 ```
 # sudo make install
 ```
+
+Checkout the [wiki] for distro specific instructions
+[wiki]: https://github.com/gkos/riemann-c-client/wiki   
 
 ## Usage
 
