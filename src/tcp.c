@@ -25,15 +25,7 @@ int riemann_tcp_recv(riemann_client_t *cli, uint8_t *buf, size_t len, int flags,
                 
         if (FD_ISSET(cli->sock, &fds)) {
 #endif
-#ifdef RIEMANN_WITH_LOCK
-                pthread_mutex_lock(&cli->mutex);
-#endif
-
                 bytes = recv(cli->sock, buf, len, flags);
-
-#ifdef RIEMANN_WITH_LOCK
-                pthread_mutex_unlock(&cli->mutex);
-#endif
 #ifdef RIEMANN_WITH_TIMEOUT
         } else { 
                 return -4;      /* Should not happen  */
@@ -74,13 +66,7 @@ int riemann_tcp_send(riemann_client_t *cli, uint8_t *buf, size_t len, int flags,
                 
         if (FD_ISSET(cli->sock, &fds)) {
 #endif
-#ifdef RIEMANN_WITH_LOCK
-        pthread_mutex_lock(&cli->mutex);
-#endif
         bytes = send(cli->sock, buf, len, flags);
-#ifdef RIEMANN_WITH_LOCK
-        pthread_mutex_unlock(&cli->mutex);
-#endif
 #ifdef RIEMANN_WITH_TIMEOUT
         } else { 
                 return -4;      /* Should not happen  */

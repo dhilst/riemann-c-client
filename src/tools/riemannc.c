@@ -77,14 +77,16 @@ int main(int argc, char **argv)
         }
         
         if (!strncmp("send", argv[1], 4)) {
-                argc--;
+		argc--;
                 argv++;
                 return riemannc_send(argc, argv);
         } else if (!strncmp("query", argv[1], 5)) {
                 argc--;
                 argv++;
                 return riemannc_query(argc, argv);
-        }
+        } else {
+		pexit("Bad command passed\n");
+	}
 
         return 0;
 }
@@ -158,7 +160,8 @@ int riemannc_send(int argc, char **argv)
                                       send_opts, &optind)) != -1) {
                 switch (ch) {
                 case OPT_SERVER:
-                        server = optarg;
+                        server = strdup(optarg);
+			assert(server);
                         break;
                 case OPT_PORT:
                         port = atoi(optarg);
@@ -266,19 +269,18 @@ int riemannc_query(int argc, char **argv)
         riemann_message_t *resp = NULL;
         riemann_query_t qry = RIEMANN_QUERY_INIT;
         int i;
+	int optind;
         int error;
-        char ch;
-#ifndef BUFSIZ
-# define BUFSIZ 4096
-#endif
+        int ch;
         char buffer[BUFSIZ];
-        
-        while ((ch = getopt_long_only(argc, argv, 
-                                      "", 
+
+        while ((ch = getopt_long_only(argc, argv,
+                                      "",
                                       query_opts, &optind)) != -1) {
                 switch (ch) {
                 case OPT_SERVER:
-                        server = optarg;
+			server = strdup(optarg);
+			assert(server);
                         break;
                 case OPT_PORT:
                         port = atoi(optarg);

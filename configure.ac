@@ -25,14 +25,13 @@ if test x$HAS_PROTOC_C != x"yes" ; then
 fi
 
 # Checks for libraries.
-
-AC_ARG_ENABLE(lock, AC_HELP_STRING([--enable-lock], [Use lock system]), 
-[
-        AC_CHECK_HEADERS([pthread.h], 
-                         [AC_DEFINE([WITH_LOCK], [1], [Use lock system])],
-                         [AC_ERROR([--enable-lock passed but no pthread.h header found])])
-        AC_SUBST([WITH_LOCK_LDFLAGS], [-lpthread])
-])
+dnl AC_ARG_ENABLE(lock, AC_HELP_STRING([--enable-lock], [Use lock system]), 
+dnl [
+dnl         AC_CHECK_HEADERS([pthread.h], 
+dnl                          [AC_DEFINE([WITH_LOCK], [1], [Use lock system])],
+dnl                          [AC_ERROR([--enable-lock passed but no pthread.h header found])])
+dnl         AC_SUBST([WITH_LOCK_LDFLAGS], [-lpthread])
+dnl ])
 
 # Check for protobuf-c
 AC_ARG_WITH(protobuf-c-dir, AC_HELP_STRING([--with-protobuf-c-dir], [Path to protobuf-c]), 
