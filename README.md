@@ -14,8 +14,6 @@ Chekout the [wiki]!
 - Timeout support, enabling blocking and non-blocking calls on same
   function. (Can be disabled at compile time
   --disable-timeout. Enabled by default.)
-- Implicit locking system (Can be enabled at compile time
-  --enable-lock. Disabled by default.)
 - Support for tags and attributes
 - Support for sending multiple events in one shot
 
