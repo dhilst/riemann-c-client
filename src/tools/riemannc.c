@@ -312,7 +312,7 @@ int riemannc_query(int argc, char **argv)
         if (error)
                 pexit("riemann_client_send_message");
 
-        resp = riemann_client_recv_message(&cli, 0, NULL);
+        resp = riemann_client_recv_message(&cli, MSG_WAITALL, NULL);
         if (!resp)
                 pexit("riemann_client_recv_message");
 
