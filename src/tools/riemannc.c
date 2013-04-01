@@ -119,6 +119,7 @@ void riemannc_usage(void)
 "    --format format The format string for output.\n"
 "	Flag 	Field\n"
 "	%T 	time\n"
+"	%c 	localized time string\n"
 "	%S	state\n"
 "	%s	service\n"
 "	%h	host\n"

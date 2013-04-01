@@ -4,6 +4,9 @@
 # include <inttypes.h>
 #endif
 
+#include <time.h>
+#include <string.h>
+
 #include <riemann/_config.h>
 #include <riemann/attribute.h>
 #include <riemann/event.h>
@@ -193,6 +196,17 @@ int riemann_event_strfevent(char *s, size_t max, const char *fmt, riemann_event_
                                 if (bytes < 0)
                                         return -1;
                                 offset += bytes - 1;
+                                break;
+                        case 'c':
+                                if (!evtp->has_time)
+                                        bytes = snprintf(s + offset, max - offset, "%s", "");
+                                else 
+                                        bytes = snprintf(s + offset, max - offset, "%s", ctime((time_t *) &evtp->time));
+
+                                if (bytes < 0)
+                                        return -1;
+                                offset += bytes - 2;
+
                                 break;
                         case 'S':
                                 bytes = snprintf(s + offset, max - offset, "%s", evtp->state);
