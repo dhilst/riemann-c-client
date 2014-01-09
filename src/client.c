@@ -84,6 +84,9 @@ int riemann_client_send_message(riemann_client_t *cli, riemann_message_t *msg, i
                         return -1;
 
                 error = riemann_tcp_send(cli, buf, len, flags, tout);
+
+                free(buf);
+
                 if (error)
                         return -2;
 
@@ -95,6 +98,9 @@ int riemann_client_send_message(riemann_client_t *cli, riemann_message_t *msg, i
                         return -3;
 
                 error = riemann_udp_send(cli, buf, len, flags, tout);
+
+                free(buf);
+
                 if (error)
                         return -4;
 
