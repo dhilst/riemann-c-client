@@ -62,7 +62,7 @@ int riemann_client_connect(riemann_client_t *cli, int type, char *hostname, int 
 void riemann_client_free(riemann_client_t *cli)
 {
         cli->type = -1;
-        if (-1 == cli->sock) {
+        if (cli->sock != -1) {
                 close(cli->sock);
                 cli->sock = -1;
         }
