@@ -33,8 +33,8 @@ enum {
 static struct option send_opts[] = {
         {"server", required_argument, 0, OPT_SERVER},
         {"port", required_argument, 0, OPT_PORT},
-        {"tcp", required_argument, 0, OPT_TCP},
-        {"udp", required_argument, 0, OPT_UDP},
+        {"tcp", no_argument, 0, OPT_TCP},
+        {"udp", no_argument, 0, OPT_UDP},
         {"time", required_argument, 0, OPT_TIME},
         {"state", required_argument, 0, OPT_STATE},
         {"service", required_argument, 0, OPT_SERVICE},
@@ -52,7 +52,7 @@ static struct option send_opts[] = {
 static struct option query_opts[] = {
         {"server", required_argument, 0, OPT_SERVER},
         {"port", required_argument, 0, OPT_PORT},
-        {"tcp", required_argument, 0, OPT_TCP},
+        {"tcp", no_argument, 0, OPT_TCP},
         {"string", required_argument, 0, OPT_QUERY_STRING},
         {"format", required_argument, 0, OPT_FORMAT},
         {0, 0, 0, 0},
