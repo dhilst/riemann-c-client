@@ -100,9 +100,11 @@ void riemannc_usage(void)
 "Both modes support these options:\n"
 "    --server hostname   The Riemann server IP or hostname\n"
 "    --port port         The Riemann server port\n"
+"    --tcp               Use TCP for the connection (default)\n"
 "If not provided, these default to localhost:5555\n\n"
 
 "Send mode options to build up the Riemann event:\n"
+"    --udp                         Use UDP (instead of TCP) to send the event\n"
 "    --host host                   Hostname for the event, not the Riemann server\n"
 "    --service service             Service name\n"
 "    --state state                 State option\n"
