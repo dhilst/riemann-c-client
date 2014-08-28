@@ -33,8 +33,8 @@ enum {
 static struct option send_opts[] = {
         {"server", required_argument, 0, OPT_SERVER},
         {"port", required_argument, 0, OPT_PORT},
-        {"tcp", required_argument, 0, OPT_TCP},
-        {"udp", required_argument, 0, OPT_UDP},
+        {"tcp", no_argument, 0, OPT_TCP},
+        {"udp", no_argument, 0, OPT_UDP},
         {"time", required_argument, 0, OPT_TIME},
         {"state", required_argument, 0, OPT_STATE},
         {"service", required_argument, 0, OPT_SERVICE},
@@ -52,7 +52,7 @@ static struct option send_opts[] = {
 static struct option query_opts[] = {
         {"server", required_argument, 0, OPT_SERVER},
         {"port", required_argument, 0, OPT_PORT},
-        {"tcp", required_argument, 0, OPT_TCP},
+        {"tcp", no_argument, 0, OPT_TCP},
         {"string", required_argument, 0, OPT_QUERY_STRING},
         {"format", required_argument, 0, OPT_FORMAT},
         {0, 0, 0, 0},
@@ -100,9 +100,11 @@ void riemannc_usage(void)
 "Both modes support these options:\n"
 "    --server hostname   The Riemann server IP or hostname\n"
 "    --port port         The Riemann server port\n"
+"    --tcp               Use TCP for the connection (default)\n"
 "If not provided, these default to localhost:5555\n\n"
 
 "Send mode options to build up the Riemann event:\n"
+"    --udp                         Use UDP (instead of TCP) to send the event\n"
 "    --host host                   Hostname for the event, not the Riemann server\n"
 "    --service service             Service name\n"
 "    --state state                 State option\n"
