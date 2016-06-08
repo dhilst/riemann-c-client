@@ -108,6 +108,7 @@ void riemannc_usage(void)
 "    --host host                   Hostname for the event, not the Riemann server\n"
 "    --service service             Service name\n"
 "    --state state                 State option\n"
+"    --description description     Description of the event\n"
 "    --tags tag1,tag2              Array of tags, as comma-separated list\n"
 "    --attributes <key=val>[,...]  The attributes array, comma-separated\n"
 "    --ttl ttl                     The ttl field in seconds\n"
