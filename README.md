@@ -1,11 +1,20 @@
 # riemann-c-client
 
-Native C client and library for [Riemann]
+Native C client and library for [Riemann] licensed with Apache License 2.0.
 
 [Riemann]: http://riemann.io
  
 Chekout the [wiki]!
 [wiki]: https://github.com/gkos/riemann-c-client/wiki
+
+You may want to take a look at [Algenon's riemann-c-client] it supports
+everthing that this version supports plus TLS. Also it has a simpler API.
+I'm still willing to merge pull requests if anyone has interest.
+[Algenon's riemann-c-client]: https://github.com/algernon/riemann-c-client 
+
+## Notes
+
+- 2016-10-02: I'm re-releasing this as Apache License 2.0.
 
 ## Features
 
@@ -30,21 +39,6 @@ Use `--with-protobuf-c-dir=/usr/local/Cellar/protobuf-c/0.15`
 as arguments to `./configure` below.
 
 [protobuf-c]: http://code.google.com/p/protobuf-c/
-
-## @TODO
-
-- Improve error signaling, return kind of errno
-- Autotools
-  	- Implement an alternative to getaddrinfo(), (gethostbyname!?)	
-    at compile time.
-    - Write INSTALL and README 
-- Doxygen?
-- Create a wiki for better documentin
-- Test on this enviroments
-    - AIX
-    - Solaris
-    - FreeBSD
-    - OpenBSD
 
 ## Install
 
@@ -152,10 +146,3 @@ When compiling your code, link it against libriemann_client:
 
 
 For complete examples look at src/examples directory.
-
-
-
-
-
-
-
